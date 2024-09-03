@@ -1,0 +1,224 @@
+(*
+    module  : menuin.joy
+    version : 1.3
+    date    : 06/25/24
+*)
+"lang.joy" include.
+
+"header.joy" include.
+"editch.joy" include.
+"limits.joy" include.
+"functn.joy" include.
+
+LIBRA
+
+(*
+    Return the last value of a list.
+*)
+last ==
+dup size pred at;
+
+(*
+    Take as input the menu lines and return the start x position.
+    The maximum length is subtracted from the number of columns and
+    then divided by 2, more or less centering the text in the screen.
+*)
+calc-start ==		# menu
+[size] map qsort last Cols - neg 2 /;
+
+(*
+    When given the start position, calculate the x position of input.
+*)
+calc-input ==
+YR-CHOICE size succ succ +;
+
+main-menu ==
+[MAIN-MENU REGISTER SETTINGS REPORTS];
+
+day-menu ==
+[REGISTER-MENU CASH BANK GENERAL-TRANSACTION NOTES-MENU YEAR-CLOSING-MENU];
+
+std-menu ==
+[SETTINGS-MENU CREATE-ACCOUNT STANDARDS-MENU PERCENTAGES-MENU];
+
+rep-menu ==
+[REPORTS-MENU CHART-ACCOUNTS STANDARD-ACCOUNTS PERCENTAGES TRANSACTION-JOURNAL
+LEDGER-VIEW PROFIT-AND-LOSS BALANCE-SHEET];
+
+main-choice == "123";
+day-choice == "12345";
+std-choice == "123";
+rep-choice == "1234567";
+
+HIDE
+  _ == [null] [] [uncons [pop =] [cons] [popd _] ifte] ifte
+IN
+  chrstr == _ popd
+END;
+
+(*
+    ischar tests whether a lower case character is present.
+*)
+ischar ==
+dup 'a >= swap 'z <= and;
+
+(*
+    Similar to strchr, except that it gives the index in the string. It is
+    already known that the character is present.
+*)
+stridx ==		# ch string
+dup			# ch string string
+size			# ch string size
+[chrstr			# string size
+size			# string size
+] dip
+-			# string string-size
+neg;			# string size-string
+
+choice-to-index ==	# menu choice row str
+first			# menu choice row ch
+[ischar]
+[2 pick stridx]		# menu choice row ch choice
+[49 - ord] ifte;
+
+(*
+    do-choice takes as input the choice-string and leaves it untouched.
+    Must also receive the row.
+*)
+do-choice ==		# menu choice start row
+2 pick			# menu choice start row choice
+'0 Default + "" cons	# menu choice start row choice default
+3 pick calc-input	# menu choice start row choice default x
+3 pick			# menu choice start row choice default x row
+limits;			# menu choice start row string ch
+
+get-default ==		# menu choice start row menu
+Default at 2 pick 9 Default +;
+
+print-old-default ==	# menu choice start row
+3 pick get-default false print;
+
+print-new-default ==	# menu choice start row
+3 pick get-default true print;
+
+(*
+    decr-default takes as input menu, choice, and row.
+    The limit 3 should be replaced by row - 11.
+*)
+decr-default ==		# menu choice start row
+print-old-default
+Default pred [1 <] [pop dup 11 -] [] ifte [Default] assign
+print-new-default;
+
+(*
+    incr-default takes as input menu, choice, and row.
+    The limit 3 should be replaced by row - 11.
+*)
+incr-default ==		# menu choice start row
+print-old-default
+Default succ [over 11 - >] [pop 1] [] ifte [Default] assign
+print-new-default;
+
+submenu ==
+[0 do-day-menu do-std-menu do-rep-menu];
+
+(*
+    Test whether a submenu needs to be started. If the size of the stack is 4,
+    then this is the main menu and there is a submenu. Otherwise it is already
+    a submenu and the function needs to be started.
+*)
+test-sub-menu ==
+[stack size 6 =]
+[submenu of call]
+[function pop pop pop print-menu] ifte;
+
+(*
+    After return from a function or a submenu, the menu needs to be drawn again.
+*)
+handle-left-arrow ==
+[stack size 5 =]
+[quit]
+[pop pop pop pop pop pop pop pop print-menu]	# reduce to menu choice
+ifte;
+
+(*
+    test-choice takes action based on the choice that was made. This depends
+    on the cursor key.
+*)
+test-choice ==			# menu choice start row string ch
+[[UARR pop decr-default]
+ [DARR pop incr-default]
+ [LARR handle-left-arrow]	# quit only in main menu
+ [RARR Default test-sub-menu]
+ [pop choice-to-index test-sub-menu]
+] case;
+
+(*
+    show-line prints a menuline at row 10 and onwards at position 26.
+*)
+show-line ==		# start row menuline
+2 pick			# start row menuline col
+2 pick			# start row menuline col row
+(*
+    Test whether this is the default choice. If it is, it is printed in color.
+*)
+dup Default 9 + =
+print			# start row menuline col row t/f
+succ;			# start row
+
+print-menu ==		# menu choice
+1 [Default] assign
+over first		# menu choice title
+PrintHead		# menu choice
+over rest		# menu choice lines
+dup			# menu choice lines lines
+[calc-start 10] dip	# menu choice start 10 lines
+[show-line] step
+succ			# menu choice start row
+YR-CHOICE		# menu choice start row keuze
+2 pick			# menu choice start row keuze col
+2 pick			# menu choice start row keuze col row
+false			# menu choice start row keuze col row false
+print			# menu choice start row
+[2 pick main-choice =]
+[PRESS-TO-LEAVE 40 25 false print]
+[]
+ifte;
+
+do-day-menu ==
+day-menu day-choice	# menu choice
+print-menu		# menu choice start row
+[]
+[do-choice
+test-choice]
+while;
+
+do-std-menu ==
+std-menu std-choice	# menu choice
+print-menu		# menu choice start row
+[]
+[do-choice
+test-choice]
+while;
+
+do-rep-menu ==
+rep-menu rep-choice	# menu choice
+print-menu		# menu choice start row
+[]
+[do-choice
+test-choice]
+while;
+
+(*
+    Main program.
+*)
+do-main-menu ==
+Intro
+main-menu main-choice	# menu choice
+print-menu		# menu choice start row
+[]
+[do-choice
+test-choice]
+while.
+
+do-main-menu.

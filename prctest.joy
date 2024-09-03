@@ -1,0 +1,19 @@
+(*
+    module  : prctest.joy
+    version : 1.1
+    date    : 06/27/24
+*)
+LIBRA
+
+(*
+    Build a list of percents, remove duplicates and sort from low to high.
+*)
+percent-list ==
+bs_new			# create a set
+init-Prc Prc		# read percents with possible duplicates
+[first] map		# select only account numbers
+[bs_insert] step	# build a list of unique percents
+dup			# list list
+Prc [[0]] concat	# list list [..]
+swap			# list [..] list
+[dup [swap case] dip swap pairlist] map popd popd.

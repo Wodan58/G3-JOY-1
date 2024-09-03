@@ -1,0 +1,19 @@
+(*
+    module  : balview.joy
+    version : 1.6
+    date    : 06/28/24
+*)
+
+(*
+    Balance sheet
+*)
+LIBRA
+
+Bal-view ==
+init-pal-bal-view
+[second "b" =] filter
+mid-pal-bal-view
+[negative]
+end-pal-bal-view
+["" ""] BALANCE-SHEET-SCREEN
+rest-report.

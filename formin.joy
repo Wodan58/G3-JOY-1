@@ -1,0 +1,134 @@
+(*
+    module  : formin.joy
+    version : 1.2
+    date    : 06/25/24
+*)
+"editln.joy" include.
+"textin.joy" include.
+"datein.joy" include.
+"wordin.joy" include.
+
+(*
+    Een scherm werkt ongeveer hetzelfde als een menu. Het verschil is dat het
+    keuze-veld meedraait in de volgorde van up en down. Alleen in het keuze
+    veld kan het scherm verlaten worden.
+*)
+LIBRA
+
+(*
+    Print the prompts of a screen definition.
+*)
+text-loop ==	# [..]
+[dup		# [..] [..]
+2 at		# [..] x-pos
+over		# [..] x-pos [..]
+0 at		# [..] x-pos str
+size		# [..] x-pos size
+-		# [..] x-pos
+pred		# [..] x-pos
+pred		# [..] x-pos
+over		# [..] x-pos [..]
+3 at		# [..] x-pos y-pos
+gotoxy		# [..]
+0 at		# str
+putchars]	#
+step;
+
+(*
+    Print the contents of the variables. Each variable has a datatype that is
+    derived from the input function.
+*)
+print-type ==
+[[amount format-num '\b swons putchars]
+ [limits putchars]
+ [datein datestr putchars]
+ [longin put]
+ [number num2str putchars]
+ [textin putchars]
+ [wordin put]
+ []
+] case;
+
+vars-loop ==	# [..]
+[dup		# [..] [..]
+2 at		# [..] x-pos
+over		# [..] x-pos [..]
+3 at		# [..] x-pos y-pos
+gotoxy		# [..]
+dup		# [..] [..]
+1 at		# [..] var
+over		# [..] var [..]
+4 at		# [..] var type
+print-type	# [..]
+pop]		#
+step;
+
+decr-index ==		# [..]
+Default pred		# [..] Default
+[0 <] [pop dup size pred] [] ifte
+[Default] assign;
+
+incr-index ==		# [..]
+Default succ		# [..] Default
+[over size >=] [pop 0] [] ifte
+[Default] assign;
+
+update-var ==		# [..] var
+swap			# var [..]
+dup			# var [..] [..]
+1 take			# var [..] [.]
+swap			# var [.] [..]
+2 drop			# var [.] [...]
+enconcat;		# [..]
+
+update-line ==		# [..] line
+swap			# line [..]
+dup			# line [..] [..]
+Default take		# line [..] [.]
+swap			# line [.] [..]
+Default succ drop	# line [.] [...]
+enconcat;		# [..]
+
+last == dup size pred at;
+
+input-loop ==		# [..]
+0 [Default] assign	# [..]
+Default			# [..] Default
+[0 >=]
+[over			# [..] Default [..]
+of			# [..] [.]
+dup			# [..] [.] [.]
+1 at			# [..] [.] var
+over			# [..] [.] var [.]
+2 at			# [..] [.] var x-pos
+2 pick			# [..] [.] var x-pos [.]
+3 at			# [..] [.] var x-pos y-pos
+3 pick			# [..] [.] var x-pos y-pos [.]
+4 at			# [..] [.] var x-pos y-pos function
+call			# [..] [.] var ch
+
+# dupd			# [..] [.] var var ch
+# [[update-var] dip] dip	# [..] [.]     var ch
+# [dupd] dip		# [..] [.] [.] var ch
+# [[[update-line] dip] dip] dip	# [..] [.] var ch
+
+2 pick			# [..] [.] var ch [.]
+dup			# [..] [.] var ch [.] [.]
+size			# [..] [.] var ch [.] size
+[6 =]
+[pop 5 at call]		# [..] [.] var ch function
+[pop pop]		# [..] [.] var ch
+ifte			# [..] [.] var ch
+
+[update-var] dip	# [..] [.] ch
+[update-line] dip	# [..] ch
+
+[[UARR decr-index]
+ [DARR incr-index]
+ [LARR -1 [Default] assign pop pop]
+ [RARR -2 [Default] assign]
+ []			# [..]
+] case
+Default]		# [..] Default
+while
+.

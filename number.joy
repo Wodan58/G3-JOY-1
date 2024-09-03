@@ -1,0 +1,47 @@
+(*
+    module  : number.joy
+    version : 1.3
+    date    : 06/26/24
+*)
+
+LIBRA
+
+num2str ==		# account
+'d 0 0 format;		# string
+
+(*
+    Input of an account at x, y. The account is an integer. It needs to be
+    converted to a string prior to input and converted to integer after input.
+    The account contains leading zeroes. It has a length of 4 digits.
+*)
+number ==		# account x y
+rolldown		# x y account
+num2str			# x y "account"
+dup			# x y "account" "account"
+"[" swoncat		# x y "account" "[account"
+"]" concat		# x y "account" "[account]"
+3 pick			# x y "account" "[account]" x
+pred			# x y "account" "[account]" x-1
+3 pick			# x y "account" "[account]" x-1 y
+true			# x y "account" "[account]" x-1 y true
+print			# x y "account"
+'0			# x y "account" '0
+swap			# x y '0 "account"
+rollupd			# '0 x y "account"
+0			# '0 x y "account" 0
+editln			# ok x y str pos ch
+popd			# ok x y str ch -> pos is no longer needed
+swap			# ok x y ch str
+rollupd			# ok ch x y str
+10 strtol		# ok ch x y account
+dup			# ok ch x y account account
+num2str			# ok ch x y account "format"
+rollupd			# ok ch account x y "format"
+" " swoncat		# ok ch account x y " format"
+" " concat		# ok ch account x y " format "
+rollup			# ok ch account format x y
+[pred] dip		# ok ch account format x-1 y
+false			# ok ch account format x-1 y false
+print			# ok ch account
+rotate			# account ch ok
+pop.			# account ch

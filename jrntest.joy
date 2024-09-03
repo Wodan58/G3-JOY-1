@@ -1,0 +1,29 @@
+(*
+    module  : jrntest.joy
+    version : 1.2
+    date    : 06/29/24
+*)
+
+(*
+    Check that all fields are filled.
+*)
+LIBRA
+
+(*
+    Loop at all fields, checking that none is null.
+*)
+jrntest ==	# [..]
+reverselist
+2 drop		# drop "Your Choice" and VAT amount
+dup		# [..] [..]
+size		# [..] size
+swap		# size [..]
+[second] filter	# size [..]
+size =;		# true/false
+
+yeartest ==	# [..]
+dup		# [..] [..]
+size		# [..] size
+swap		# size [..]
+[second] filter	# size [..]
+size =.		# true/false

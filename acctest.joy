@@ -1,0 +1,23 @@
+(*
+    module  : acctest.joy
+    version : 1.1
+    date    : 06/27/24
+*)
+"typlib" libload.
+
+LIBRA
+
+quadlet == [[] cons cons cons] dip swons;
+
+(*
+    Build a list of accounts, remove duplicates and sort from low to high.
+*)
+account-list ==
+bs_new			# create a set
+init-Acc Acc		# read accounts with possible duplicates
+[first] map		# select only account numbers
+[bs_insert] step	# build a list of unique account numbers
+dup			# list list
+Acc [[0]] concat	# list list [..]
+swap			# list [..] list
+[dup [swap case] dip quadlet] map popd popd.

@@ -1,0 +1,120 @@
+(*
+    module  : paging.joy
+    version : 1.1
+    date    : 05/05/24
+*)
+
+(*
+    Global variables:
+
+    Xpos
+    Ypos
+    Cols
+    Rows
+    Start
+*)
+
+(*
+    Reduce start by one screen; if negative set to 0.
+    This procedure is triggered by the PageUp key.
+*)
+DEFINE
+up-screen ==
+Start Rows - [0 <] [pop 0] [] ifte
+[Start] assign.
+
+(*
+    Increase start by one screen; unless the last screen is visible.
+    This procedure is triggered by the PageDown key.
+*)
+DEFINE
+down-screen ==
+Start Rows + [over size <] [[Start] assign] [pop] ifte.
+
+(*
+    Home and hide the cursor.
+*)
+DEFINE
+cursorHome ==
+"\027[H\027[?25l" putchars.	# home and hide cursor
+
+(*
+    Write lines of text: it is already known that these lines fit on the screen.
+*)
+DEFINE
+writeLines ==
+[null not]			# as long as there are lines
+[unswons			# "\r" putchars - move to start of line
+"\027[K" putchars		# clear line first
+putchars			# display line - lines are fully filled
+'\n putch]			# move to the next line
+while pop.			# remove empty list
+
+(*
+    Restore the cursor: position and visibility.
+*)
+DEFINE
+restoreCursor ==
+"\027[" putchars		# position cursor
+Ypos 'd 0 0 format putchars	# y-position of cursor
+'; putch			# separator
+Xpos 'd 0 0 format putchars	# x-position of cursor
+"H\027[?25h" putchars.		# show cursor
+
+(*
+    Draw a number of rows and then position the cursor again.
+*)
+DEFINE
+writeScreen ==
+cursorHome			# lines
+(*
+    Extract text and number of lines. Then print lines and start the
+    remaining lines with ~.
+*)
+dup				# lines lines
+Start				# lines lines start
+drop				# lines text
+Rows				# lines text rows
+take				# lines text
+dup				# lines text text
+writeLines			# lines text
+size				# lines size
+Rows				# lines size rows
+-				# lines size-rows
+neg				# lines rows-size
+["~\027[K\n" putchars]		# lines
+times				# lines
+restoreCursor.			# lines
+
+(*
+    Read a key and take appropriate action, updating the global variables.
+    The actions are PageUp, PageDown, End.
+    Other keys are ignored.
+*)
+DEFINE
+readKey ==
+getkey
+[[UARR up-screen]
+ [DARR down-screen]
+ [LARR pop false]
+ [pop]
+] case.
+
+(*
+    The editor quits automatically when the text is empty.
+*)
+DEFINE
+pager ==
+[] [writeScreen readKey] while.
+
+(*
+    Rows and Columns are stored on the stack by the SetRaw function, that is
+    triggered by the "-k" start option.
+*)
+
+(*
+[Cols] assign [Rows] assign
+1 [Xpos] assign 1 [Ypos] assign
+0 [Start] assign
+pager.
+*)

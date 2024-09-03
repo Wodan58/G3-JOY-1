@@ -1,0 +1,23 @@
+(*
+    module  : prcpost.joy
+    version : 1.3
+    date    : 06/26/24
+*)
+
+LIBRA
+
+(*
+    If everything is filled in correctly, the record can be posted. The thing
+    that must be present is the unique key.
+*)
+prcpost ==
+[dup first second null]
+[]			# no unique key
+["percent.txt" "a" fopen
+over first second trim fput '\t fputch
+over second second fput '\n fputch
+fclose
+[Prc] unassign]		# invalidate Prc
+ifte
+pop			# remove aggregate
+SETTINGS-MENU PrintHeader.

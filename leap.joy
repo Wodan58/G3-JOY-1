@@ -1,0 +1,26 @@
+(*
+    module  : leap.joy
+    version : 1.2
+    date    : 06/27/24
+*)
+
+LIBRA
+
+(*
+    Determine whether a year is a leap year.
+
+    Is the year divisible by 100?
+	Is the year divisible by 400?
+		Yes=leap, No=no leap
+    Else is the year divisible by 4?
+	Yes=leap, No=no leap.
+*)
+isleap ==	# year
+[100 rem null]	# divisible by 100?
+[[400 rem null]	# divisible by 400?
+ [true]
+ [false] ifte]
+[[4 rem null]	# divisible by 4?
+ [true]
+ [false] ifte]
+ifte popd.	# true/false

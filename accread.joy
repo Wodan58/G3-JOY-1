@@ -1,0 +1,26 @@
+(*
+    module  : accread.joy
+    version : 1.5
+    date    : 06/27/24
+*)
+LIBRA
+
+read-Acc ==
+stack [Old] assign	# save the old stack in a list
+newstack		# and make the stack empty
+"account.txt" finclude	# parse data file
+readrec4		# collect quads in a list
+reverselist		# make sure that later entries overrule earlier ones
+[Acc] assign		# and store them under the name Acc
+Old unstack;		# and restore the old stack
+
+(*
+    Convert the list of accounts to a list of strings.
+*)
+write-Acc ==		# Acc
+[uncons [num2str] dip uncons uncons first
+'\t swons concat '\t swons concat '\t swons concat] map;
+
+init-Acc ==		# first test whether Acc has already been read
+["Acc" intern body null]
+[read-Acc] [] ifte.	# if so, don't read Acc again.

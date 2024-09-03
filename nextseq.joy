@@ -1,0 +1,23 @@
+(*
+    module  : nextseq.joy
+    version : 1.2
+    date    : 06/25/24
+*)
+DEFINE next-seqnr ==
+"journal.txt" "r" fopen
+[null]			# fp
+[pop 1]			# 1
+[-100 2 fseek pop	# fp
+fgets			# fp old-line
+swap			# old-line fp
+[over null not]		# old-line fp empty?
+[fgets			# old-line fp new-line
+[dup null not]		# old-line fp new-line empty?
+[rotate			# new-line fp old-line
+pop]			# new-line fp
+[swap]			# old-line "" fp
+ifte]
+while			# line "" fp
+fclose			# line ""
+pop			# line
+10 strtol succ] ifte.

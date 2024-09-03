@@ -1,0 +1,65 @@
+(*
+    module  : header.joy
+    version : 1.4
+    date    : 08/16/24
+*)
+"screen.joy" include.
+"getkey.joy" include.
+
+(*
+    This prints the header of a page, as well as the introduction screen.
+    The text of the header consists of 3 parts: program, title, company.
+    The title needs to be centered between program on the left and company
+    on the right.
+*)
+LIBRA
+PrintHead ==		# title
+Cols			# number of columns on the screen
+3 -			# correction for box characters and a space separator
+PROGRAM-NAME size -	# subtract the space needed for the program name
+over size -		# subtract the space needed for the title
+COMPANY-NAME size -	# subtract the space needed for the company name
+pred
+2 div swap		# divide the remaining space into two parts
+"" swap			# build a string the size of the remaining space
+['\032 swons]
+times			# due to integer division, the space could be one short
+dup			# title remain spaces spaces
+swapd			# title spaces remain spaces
+[over] ['\032 swons]	# title spaces remain spaces
+[] ifte popd		# title spaces spaces
+PROGRAM-NAME		# title spaces spaces Program
+swoncat			# title spaces Program
+rollup			# Program title spaces
+concat			# Program title
+concat			# Program
+COMPANY-NAME		# Program Company
+concat			# Program
+3 3 false print		# Output to screen
+1 6 gotoxy clreod;	# Clear the rest of the screen.
+
+PrintHeader ==		# title
+clrscr
+1 1 Cols pred 5 printbox
+PrintHead;
+
+Intro ==
+# 25 80			# test key.txt
+(* Install a number of global variables *)
+[Cols] assign pred [Rows] assign
+
+(* Start the introduction screen *)
+INTRO-MENU PrintHeader	# lines 1-5
+			# lines 6-12
+ACCOUNTING-MADE-EASY	# text
+Cols over size - 2 /	# calculate x-position
+13 false print		# print on line 13
+VERSION " 1.1" concat	# text
+Cols over size - 2 /	# calculate x-position
+15 false print		# print on line 15
+"Copyright Saru Janpu 2020"
+Cols over size - 2 /	# calculate x-position
+17 false print		# print on line 17
+			# lines 18-24
+PRESS-TO-CONTINUE 40 25 false print
+getkey [RARR !=] [pop getkey] while pop.	# remove RARR

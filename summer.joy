@@ -1,0 +1,47 @@
+(*
+    module  : summer.joy
+    version : 1.3
+    date    : 06/25/24
+*)
+
+"findacc.joy" include.	# find-index
+
+DEFINE summer ==	# [rek] [jrn]
+dup size		# [rek] [jrn] size
+[unswons		# [rek] [jrn] [reknr bedrag]
+i			# [rek] [jrn] reknr bedrag
+swap			# [rek] [jrn] bedrag reknr
+3 pick			# [rek] [jrn] bedrag reknr [rek]
+find-index		# [rek] [jrn] bedrag reknr index
+[negative]
+[pop pop pop]		# [rek] [jrn]
+[popd			# [rek] [jrn] bedrag index
+  3 pick		# [rek] [jrn] bedrag index [rek]
+  size			# [rek] [jrn] bedrag index size
+  -			# [rek] [jrn] bedrag index
+  neg			# [rek] [jrn] bedrag index
+  pred			# [rek] [jrn] bedrag index
+  swap			# [rek] [jrn] index bedrag
+  over			# [rek] [jrn] index bedrag index
+  4 pick		# [rek] [jrn] index bedrag index [rek]
+  of			# [rek] [jrn] index bedrag [reknr saldo]
+  dup			# [rek] [jrn] index bedrag [reknr saldo] [reknr saldo]
+  third			# [rek] [jrn] index bedrag [reknr saldo] saldo
+  swapd			# [rek] [jrn] index [reknr saldo] bedrag saldo
+  +			# [rek] [jrn] index [reknr saldo] new_saldo
+  [i] dip		# [rek] [jrn] index reknr omschr saldo new_saldo
+  popd			# [rek] [jrn] index reknr omschr new_saldo
+  []			# [rek] [jrn] index reknr omschr new_saldo []
+  cons cons cons	# [rek] [jrn] index [reknr saldo]
+  rolldownd		# [jrn] index [rek] [reknr saldo]
+  rollup		# [jrn] [reknr saldo] index [rek]
+  swap			# [jrn] [reknr saldo] [rek] index
+  over			# [jrn] [reknr saldo] [rek] index [rek]
+  over			# [jrn] [reknr saldo] [rek] index [rek] index
+  succ			# [jrn] [reknr saldo] [rek] index [rek] index
+  drop			# [jrn] [reknr saldo] [rek] index [rek]
+  [take] dip		# [jrn] [reknr saldo] [rek] [rek]
+  enconcat		# [jrn] [rek]
+  swap			# [rek] [jrn]
+] ifte ]
+times pop.		# [rek]

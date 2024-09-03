@@ -1,0 +1,23 @@
+(*
+    module  : findacc.joy
+    version : 1.1
+    date    : 05/05/24
+*)
+
+LIBRA
+(*
+    locate the index where a reknr is listed.
+*)
+find-index ==	# reknr reklist
+[dup null not]
+[unswons	# reknr reklist rekitem
+first		# reknr reklist reknr
+[dup 3 pick =]	# reknr reklist reknr t/f
+[pop []]	# reknr reklist [] -> found
+[pop]		# reknr reklist -> not yet found
+ifte]
+while		# reknr reklist []
+pop		# reknr reklist
+[-1]		# reknr -1 -> not found
+[size]		# reknr size -> size of remaining reklist
+ifinteger.	# reknr size

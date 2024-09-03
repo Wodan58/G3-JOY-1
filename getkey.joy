@@ -1,0 +1,305 @@
+(*
+    module  : getkey.joy
+    version : 1.5
+    date    : 08/16/24
+*)
+CONST
+(* normal ASCII keys *)
+CTRL-A == 1;
+CTRL-B == 2;
+CTRL-C == 3;
+CTRL-D == 4;
+CTRL-E == 5;
+CTRL-F == 6;
+CTRL-G == 7;
+CTRL-H == 8;
+CTRL-I == 9;
+CTRL-J == 10;
+CTRL-K == 11;
+CTRL-L == 12;
+CTRL-M == 13;
+CTRL-N == 14;
+CTRL-O == 15;
+CTRL-P == 16;
+CTRL-Q == 17;
+CTRL-R == 18;
+CTRL-S == 19;
+CTRL-T == 20;
+CTRL-U == 21;
+CTRL-V == 22;
+CTRL-W == 23;
+CTRL-X == 24;
+CTRL-Y == 25;
+CTRL-Z == 26;
+ESCAPE == 27;
+BACKSPACE == 127;
+(* function keys *)
+F1 == -59;
+F2 == -60;
+F3 == -61;
+F4 == -62;
+F5 == -63;
+F6 == -64;
+F7 == -65;
+F8 == -66;
+F9 == -67;
+F10 == -68;
+F11 == -133;
+F12 == -134;
+(* navigation keys *)
+INSERT == -82;
+DELETE == -83;
+HOME == -71;
+END_ == -79;
+PGUP == -73;
+PGDN == -81;
+(* cursor keys *)
+UARR == -72;
+DARR == -80;
+RARR == -77;
+LARR == -75.
+
+(*
+read a key
+if the key is ESC
+  read another key
+  if the key is O or [
+    if the key is O
+      read another key
+      if the key is in [H F P Q R S]
+        -> HOME END F1 .. F4
+      endif
+    endif
+    if the key is [
+      read another key
+      if the key is in [A B C D H F 1 2 3 5 6]
+        if the key is 1
+          read another key
+          if the key is in [5 7 8 9]
+            -> F5 .. F8
+          endif
+        endif
+        if the key is 2
+          read another key
+          if the key is in [0 1 3 4 ~]
+            if the key is in [0 1 3 4]
+              read another key
+              if the key is ~
+                -> F9 .. F12
+              endif
+            endif
+            if the key is ~
+              -> insert
+            endif
+          endif
+        endif
+        if the key is in [3 5 6]
+          read another key
+          if the key is ~
+            -> delete, pgup, pgdn
+          endif
+        endif
+        if the key is in [A B C D H F]
+          -> cursor, home, end
+        endif
+      endif
+    endif
+  endif
+endif
+*)
+
+LIBRA
+test-esc == [27 =];
+test-obr == [['O '[] in];
+test-o == ['O =];
+test-br == ['[ =];
+test-hfpqrs == [['H 'F 'P 'Q 'R 'S] in];
+test-abcnum == [['A 'B 'C 'D 'H 'F '1 '2 '3 '4 '5 '6] in];
+test-1 == ['1 =];
+test-5789 == [['5 '7 '8 '9] in];
+test-2 == ['2 =];
+test-0134t == [['0 '1 '3 '4 '~] in];
+test-0134 == [['0 '1 '3 '4] in];
+test-t == ['~ =];
+test-356 == [['3 '5 '6] in];
+test-abc == [['A 'B 'C 'D 'H 'F] in];
+
+(* readkey processes escape sequences by calling fgetch more than once *)
+readkey ==
+
+(* read a key: the file descriptor is on top of the stack *)
+fgetch
+
+(* if the key is ESC *)
+test-esc [
+
+(* read another key *)
+  pop fgetch						# ESC can be removed
+
+(* if the key is O or [ *)
+  test-obr [
+
+(* if the key is O *)
+    test-o [
+
+(* read another key *)
+      pop fgetch					# O can be removed
+
+(* if the key is in [H F P Q R S] -> HOME END F1 .. F4 *)
+      test-hfpqrs [
+
+	[ ['H HOME]
+	  ['F END_]
+	  ['P F1]
+	  ['Q F2]
+	  ['R F3]
+	  ['S F4]
+	  []
+	] case
+
+      ] [] ifte (* if the key is in [H F P Q R S] *)
+
+    ] [] ifte (* if the key is O *)
+
+(* if the key is [ *)
+    test-br [
+
+(* read another key *)
+      pop fgetch					# [ can be removed
+
+(* if the key is in [A B C D H F 1 2 3 5 6] *)
+      test-abcnum [
+
+(* if the key is 1 *)
+        test-1 [
+
+(* read another key *)
+          pop fgetch					# 1 can be removed
+
+(* if the key is in [5 7 8 9] -> F5 .. F8 *)
+          test-5789 [
+
+(* read another key *)
+	    swap fgetch pop swap			# remove trailing tilde
+
+	    [ ['5 F5]
+	      ['7 F6]
+	      ['8 F7]
+	      ['9 F8]
+	      []
+	    ] case
+
+          ] [] ifte (* if the key is in [5 7 8 9] *)
+
+        ] [] ifte (* if the key is 1 *)
+
+(* if the key is 2 *)
+        test-2 [
+
+(* read another key *)
+          pop fgetch					# 2 can be removed
+
+(* if the key is in [0 1 3 4 ~] *)
+          test-0134t [
+
+(* if the key is in [0 1 3 4] *)
+            test-0134 [
+
+(* read another key *)
+              swap fgetch
+
+(* if the key is ~ -> F9 .. F12 *)
+              test-t [
+             
+                pop (* remove ~ *)
+            
+                swap (* place last digit on top *)
+
+                (* F9 .. F12  *)
+                [ ['0 F9]
+                  ['1 F10]
+                  ['3 F11]
+                  ['4 F12]
+                  []
+                ] case
+
+              ] [] ifte (* if the key is ~ *)
+
+            ] [] ifte (* if the key is in [0 1 3 4] *)
+
+(* if the key is ~ -> INSERT *)
+            test-t [
+
+              pop (* remove ~ *)
+
+              INSERT
+
+            ] [] ifte (* if the key is ~ *)
+
+          ] [] ifte (* if the key is in [0 1 3 4 ~] *)
+
+        ] [] ifte (* if the key is 2 *)
+
+(* if the key is in [3 5 6] *)
+        test-356 [
+
+(* read another key *)
+          swap fgetch
+
+(* if the key is ~ -> delete, pgup, pgdn *)
+          test-t [
+
+            pop (* remove ~ *)
+
+            swap (* place last digit on top *)
+
+            (* delete, pgup, pgdn *)
+            [ ['1 HOME]
+	      ['3 DELETE]
+	      ['4 END_]
+              ['5 PGUP]
+              ['6 PGDN]
+	      ['7 HOME]
+	      ['8 END_]
+              []
+            ] case
+
+          ] [] ifte (* if the key is ~ *)
+
+        ] [] ifte (* if the key is in [3 5 6] *)
+
+(* if the key is in [A B C D H F] -> cursor, home, end *)
+        test-abc [
+
+          (* cursor, home, end *)
+          [ ['A UARR]
+            ['B DARR]
+            ['C RARR]
+            ['D LARR]
+            ['H HOME]
+            ['F END_]
+            []
+          ] case
+
+        ] [] ifte (* if the key is in [A B C D H F] *)
+
+      ] [] ifte (* if the key is in [A B C D H F 1 2 3 5 6] *)
+
+    ] [] ifte (* if the key is O *)
+
+  ] [] ifte (* if the key is O or [ *)
+
+] [] ifte; (* if the key is ESC *)
+
+(* getkey switches between stdout and stdin and then reads a key *)
+getkey == stdout fflush pop stdin readkey popd.
+
+(* read a key from key.txt *)
+# getkey == stdout fflush pop stdin fgets 10 strtol [positive] [chr] [] ifte popd.
+
+(* output the key that was used to file "key.txt" *)
+# "key.txt" "a" fopen over fput '\n fputch fclose.
+
+(*
+true [] [getkey ['\003 =] [quit] [ord putln] ifte] while.
+*)

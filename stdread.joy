@@ -1,0 +1,39 @@
+(*
+    module  : stdread.joy
+    version : 1.4
+    date    : 06/27/24
+*)
+LIBRA
+
+std-Bank ==		# read standard Bank account
+"Bank"
+init-Std Std
+[[0]] concat
+case;
+
+std-Cash ==		# read standard Cash account
+"Cash"
+init-Std Std
+[[0]] concat
+case;
+
+read-Std ==
+stack [Old] assign	# save the old stack in a list
+newstack		# and make the stack empty
+"stdacct.txt" finclude	# parse data file
+readrec2
+[Std] assign		# and store them under the name Std
+Old unstack;		# and restore the old stack
+
+(*
+    Convert the list of standard accounts to a list of strings.
+*)
+write-Std ==		# Std
+[uncons			# descr
+first			# descr accnt
+'d 0 0 format		# descr account
+'\t swons concat] map;	# descr+account
+
+init-Std ==		# first test whether Std has already been read
+["Std" intern body null]
+[read-Std] [] ifte.	# if so, don't read Std again.

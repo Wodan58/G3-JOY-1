@@ -1,0 +1,25 @@
+(*
+    module  : filter.joy
+    version : 1.1
+    date    : 06/28/24
+*)
+
+LIBRA
+
+read-filter ==
+(*
+    Note: when applying filters, the End values should be set to maxint,
+    if they were not specified. Or, if not specified the filter should not be
+    applied at all.
+*)
+dup first second [BegDate] assign
+dup second second [null] [pop maxint] [] ifte [EndDate] assign
+dup third second [BegSeq] assign
+dup fourth second [null] [pop maxint] [] ifte [EndSeq] assign;
+
+(*
+    After reading journal.txt, apply the date and sequence filters.
+*)
+apply-filter ==
+[third dup BegDate >= swap EndDate <= and] filter
+[first dup BegSeq >= swap EndSeq <= and] filter.

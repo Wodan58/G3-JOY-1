@@ -1,0 +1,27 @@
+(*
+    module  : prcread.joy
+    version : 1.4
+    date    : 06/27/24
+*)
+LIBRA
+
+read-Prc ==
+stack [Old] assign	# save the old stack in a list
+newstack		# and make the stack empty
+"percent.txt" finclude	# parse data file
+readrec2
+[Prc] assign		# and store them under the name Prc
+Old unstack;		# and restore the old stack
+
+(*
+    Convert the list of percentages to a list of strings.
+*)
+write-Prc ==		# Std
+[uncons			# descr
+first			# descr perc
+'d 0 0 format		# descr perc
+'\t swons concat] map;	# descr+perc
+
+init-Prc ==		# first test whether Prc has already been read
+["Prc" intern body null]
+[read-Prc] [] ifte.	# if so, don't read Prc again.

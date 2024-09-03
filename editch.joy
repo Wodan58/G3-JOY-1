@@ -1,0 +1,61 @@
+(*
+    module  : editch.joy
+    version : 1.2
+    date    : 05/05/24
+*)
+
+(*
+    Test whether the key pressed is a normal character. If so, echo this
+    character and add it to the string. In all cases leave a character on
+    the stack.
+
+    ok x y str ch
+*)
+
+LIBRA
+
+(*
+    Test whether an end-key was pressed. Cursor keys are accepted and
+    characters that are present in the ok-string.
+*)
+test-endkey ==	# ok x y str ch
+dup		# ok x y str ch ch
+5 pick		# ok x y str ch ch ok
+in		# ok x y str ch t/f
+over		# ok x y str ch t/f ch
+[UARR DARR LARR RARR]
+		# ok x y str ch t/f ch cursors
+in		# ok x y str ch t/f t/f
+or;		# ok x y str ch t/f
+
+(*
+    Test whether a character is allowed.
+*)
+test-one ==	# ok x y str ch
+[dup		# ok x y str ch ch
+5 pick		# ok x y str ch ch ok
+in]		# ok x y str ch t/f
+[popd		# ok x y ch
+dup		# ok x y ch ch
+putch		# ok x y ch -> echo character
+""		# ok x y ch ""
+cons		# ok x y str
+10]		# ok x y str 10 -> result of true-branch
+[		# ok x y str
+]		# ok x y str ch -> result of false-branch
+ifte;		# ok x y str 10/ch -> result of ifte
+
+(*
+    Edit a one-character field. The edit is done when the character was allowed
+    or is a known ending key.
+*)
+edit-one ==	# ok x y str
+2 pick		# ok x y str x
+2 pick		# ok x y str x y
+gotoxy		# ok x y str
+getkey		# ok x y str ch
+(* if the character is normal, it is added to the string, and replaced by 10 *)
+[test-endkey not]
+[pop getkey]	# ok x y str ch
+while		# ok x y str ch
+test-one.	# ok x y str ch

@@ -1,0 +1,64 @@
+(*
+    module  : datein.joy
+    version : 1.2
+    date    : 05/05/24
+*)
+
+(*
+    Input of a date. The present value is in red; editing is done in white.
+*)
+
+LIBRA
+
+(*
+    Convert datestr to string with / as separator and including century.
+*)
+dateout ==		# "ddmmyy"
+["      " =]
+[pop "        "]	# add two extra space characters
+[dup			# "ddmmyy" "ddmmyy"
+4 drop			# "ddmmyy" "yy"
+swap			# "yy" "ddmmyy"
+dup			# "yy" "ddmmyy" "ddmmyy"
+2 drop 2 take		# "yy" "ddmmyy" "mm"
+swap			# "yy" "mm" "ddmmyy"
+2 take			# "yy" "mm" "dd"
+" " swoncat		# "yy" "mm" " dd"
+"/" concat		# "yy" "mm" " dd/"
+swoncat			# "yy" " dd/mm"
+"/20" concat		# "yy" " dd/mm/20"
+swoncat]		# " dd/mm/20yy"
+ifte;
+
+(*
+    Input of date at x, y. The date is an integer. It needs to be converted to
+    a string prior to input and converted to date after input.
+*)
+datein ==		# date x y
+rolldown		# x y date
+datestr			# x y "ddmmyy"
+dup			# x y "ddmmyy" "ddmmyy"
+"[" swoncat		# x y "ddmmyy" "[ddmmyy"
+"]   " concat		# x y "ddmmyy" "[ddmmyy]   "
+3 pick			# x y "ddmmyy" "[ddmmyy]   " x
+pred			# x y "ddmmyy" "[ddmmyy]   " x-1
+3 pick			# x y "ddmmyy" "[ddmmyy]   " x-1 y
+true			# x y "ddmmyy" "[ddmmyy]   " x-1 y true
+print			# x y "ddmmyy"
+'0 swap			# x y '0 "ddmmyy"
+rollupd			# '0 x y "ddmmyy"
+0			# '0 x y "ddmmyy" 0
+editln			# ok x y str pos ch
+popd			# ok x y str ch -> pos is no longer needed
+swap			# ok x y ch str
+rollupd			# ok ch x y str
+dup			# ok ch x y str str
+rollupd			# ok ch str x y str
+dateout			# ok ch str x y format
+rollup			# ok ch str format x y
+[pred] dip		# ok ch str format x-1 y
+false			# ok ch str format x-1 y false
+print			# ok ch str
+strdate			# ok ch date
+rotate			# date ch ok
+pop.			# date ch

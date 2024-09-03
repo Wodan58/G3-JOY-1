@@ -1,0 +1,18 @@
+(*
+    module  : txtread.joy
+    version : 1.4
+    date    : 06/27/24
+*)
+LIBRA
+
+read-Txt ==
+stack [Old] assign	# save the old stack in a list
+newstack		# and make the stack empty
+"textblk.txt" finclude	# parse data file
+readrec2
+[Txt] assign		# and store them under the name Txt
+Old unstack;		# and restore the old stack
+
+init-Txt ==		# first test whether Txt has already been read
+["Txt" intern body null]
+[read-Txt] [] ifte.	# if so, don't read Txt again.

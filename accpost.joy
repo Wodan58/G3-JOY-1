@@ -1,0 +1,50 @@
+(*
+    module  : accpost.joy
+    version : 1.5
+    date    : 06/28/24
+*)
+
+LIBRA
+
+(*
+    Some unwanted characters are deleted: " and \. The reason is that is would
+    or could break a string as defined in Joy. It doesn't seem necessary to
+    support these two characters.
+*)
+filter-chars ==
+[dup 92 != swap 34 != and] filter;
+
+(*
+    Remove trailing spaces
+*)
+trim ==		# str
+dup		# str str
+size		# str size
+[0 >]		# str size
+[pred		# str last
+over		# str last str
+over		# str last str last
+at		# str last ch
+['\032 =]
+[pop take trim]
+[pop pop] ifte]
+[pop] ifte
+filter-chars;	# also filter unwanted characters
+
+(*
+    If everything is filled in correctly, the record can be posted. The thing
+    that must be present is the unique key, in this case the account number.
+*)
+accpost ==		# input-screen
+[dup first second null]
+[]			# no account number
+["account.txt" "a" fopen
+over first second fput '\t fputch
+over third second trim fput '\t fputch
+over fourth second trim fput '\t fputch
+over second second trim fput '\n fputch
+fclose
+[Acc] unassign]		# invalidate Acc
+ifte
+pop			# remove input-screen
+SETTINGS-MENU PrintHeader.
