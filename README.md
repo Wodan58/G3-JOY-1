@@ -34,4 +34,4 @@ See chapters A-Z in:
 See also
 --------
 
-[GnuCash](www.gnucash.org)
+[GnuCash](https://www.gnucash.org)
