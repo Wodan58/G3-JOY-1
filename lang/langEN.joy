@@ -1,7 +1,7 @@
 (*
     module  : langEN.joy
-    version : 1.2
-    date    : 08/16/24
+    version : 1.3
+    date    : 09/18/24
 *)
 CONST
 PROGRAM-NAME	      == "G3";
@@ -14,7 +14,7 @@ PRESS-TO-CONTINUE     == "Press -> to continue...";
 MAIN-MENU             == "MAIN MENU";
 REGISTER              == "1. register";
 SETTINGS              == "2. settings";
-REPORTS               == "3. reports       ";	# position under MAIN MENU
+REPORTS               == "3. reports";
 YR-CHOICE             == "Your Choice :";
 PRESS-TO-LEAVE        == "Press <- to leave screen...";
 

@@ -1,7 +1,7 @@
 (*
     module  : functn.joy
-    version : 1.7
-    date    : 06/29/24
+    version : 1.8
+    date    : 09/18/24
 *)
 "numlib" libload.
 
@@ -572,7 +572,9 @@ sysdate datestr '\t swons
 ["" ""] cons concat swoncat
 1 [Xpos] assign 1 [Ypos] assign
 0 [Start] assign clrscr pager pop
-REPORTS-MENU PrintHeader;
+(* the next line only for reports w/o selection screen *)
+PrintBox;
+# REPORTS-MENU PrintHeader;
 
 (* chart of accounts *)
 Acc-view ==
@@ -669,6 +671,22 @@ swoncat unitlist concat
 ["" ""] LEDGER-VIEW-SCREEN
 rest-report;
 
+test-acct-9 ==	# [..] [.] var ch
+over		# [..] [.] var ch var
+init-Acc Acc	# [..] [.] var ch var Acc
+[[]] concat
+case		# [..] [.] var ch type vat descr
+[
+40 9 false	# [..] [.] var ch type vat descr 40 8 false
+print		# [..] [.] var ch type vat
+clreoln
+pop		# [..] [.] var ch type
+pop		# [..] [.] var ch
+]
+[pop]		# not found
+ifstring	# found
+;
+
 (* ledger view *)
 Gl-screen ==
 LEDGER-VIEW-SCREEN PrintHeader
@@ -676,7 +694,7 @@ LEDGER-VIEW-SCREEN PrintHeader
  [DATE-TO     0 56 7 datein]
  [SEQNR-FROM  0 18 8 wordin]
  [SEQNR-TO    0 56 8 wordin]
- [ACCOUNT     0 18 9 wordin]
+ [ACCOUNT     0 18 9 wordin test-acct-9]
  [YOUR-CHOICE " " 18 11 textin]]
 dup
 text-loop

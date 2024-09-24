@@ -1,8 +1,12 @@
 (*
     module  : menuin.joy
-    version : 1.3
-    date    : 06/25/24
+    version : 1.5
+    date    : 09/21/24
 *)
+["_usrlib" intern body null]
+["\n\"usrlib.joy\" was not loaded\n" putchars quit]
+[] ifte.
+
 "lang.joy" include.
 
 "header.joy" include.
@@ -167,9 +171,13 @@ print			# start row menuline col row t/f
 succ;			# start row
 
 print-menu ==		# menu choice
-1 [Default] assign
-over first		# menu choice title
-PrintHead		# menu choice
+1 [Default] assign	# menu choice
+over			# menu choice menu
+rest			# menu choice lines
+calc-start		# menu choice x-pos
+2 pick			# menu choice x-pos menu
+first			# menu choice x-pos title
+PrintHeadAtX		# menu choice
 over rest		# menu choice lines
 dup			# menu choice lines lines
 [calc-start 10] dip	# menu choice start 10 lines
@@ -181,7 +189,7 @@ YR-CHOICE		# menu choice start row keuze
 false			# menu choice start row keuze col row false
 print			# menu choice start row
 [2 pick main-choice =]
-[PRESS-TO-LEAVE 40 25 false print]
+[PRESS-TO-LEAVE 1 25 false print]
 []
 ifte;
 

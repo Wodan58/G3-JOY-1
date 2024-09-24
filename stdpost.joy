@@ -1,7 +1,7 @@
 (*
     module  : stdpost.joy
-    version : 1.3
-    date    : 06/26/24
+    version : 1.4
+    date    : 09/18/24
 *)
 
 LIBRA
@@ -13,11 +13,11 @@ LIBRA
 stdpost ==
 [dup first second null]
 []			# no account number
-["stdacct.txt" "a" fopen
+["stdacct.txt" "ab" fopen
 over first second trim fput '\t fputch
 over second second fput '\n fputch
 fclose
 [Std] unassign]		# invalidate Std
 ifte
-pop			# remove aggregate
-SETTINGS-MENU PrintHeader.
+pop.			# remove aggregate
+# SETTINGS-MENU PrintHeader.

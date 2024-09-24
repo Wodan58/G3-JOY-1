@@ -1,7 +1,7 @@
 (*
     module  : leap.joy
-    version : 1.2
-    date    : 06/27/24
+    version : 1.3
+    date    : 09/18/24
 *)
 
 LIBRA
@@ -17,10 +17,12 @@ LIBRA
 *)
 isleap ==	# year
 [100 rem null]	# divisible by 100?
-[[400 rem null]	# divisible by 400?
- [true]
- [false] ifte]
-[[4 rem null]	# divisible by 4?
- [true]
- [false] ifte]
-ifte popd.	# true/false
+[400 rem null]	# divisible by 400?
+[4 rem null]	# divisible by 4?
+ifte.		# true/false
+
+(* unit test *)
+# 1900 isleap.	# false
+# 2000 isleap.	# true
+# 2024 isleap.	# true
+# 2025 isleap.	# false

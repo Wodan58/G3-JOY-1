@@ -1,7 +1,7 @@
 (*
     module  : jrnpost.joy
-    version : 1.6
-    date    : 06/29/24
+    version : 1.7
+    date    : 09/18/24
 *)
 "nextseq.joy" include.
 "jrntest.joy" include.
@@ -14,7 +14,7 @@ LIBRA
 *)
 initpost ==				# [..]
 next-seqnr				# [..] seqnr
-"journal.txt" "a" fopen			# [..] seqnr fp
+"journal.txt" "ab" fopen		# [..] seqnr fp
 over fput '\t fputch;			# [..] seqnr fp -> seqnr
 
 (*
@@ -49,8 +49,8 @@ ifte
 fclose					# [..] seqnr
 pop					# [..]
 pop					#
-[Jrn] unassign				# invalidate Jrn
-REGISTER-MENU PrintHeader;
+[Jrn] unassign;				# invalidate Jrn
+# REGISTER-MENU PrintHeader;
 
 (*
     This is a posting from the Cash standard account.
@@ -68,7 +68,7 @@ std-Cash				# [..] seqnr fp Cash
 3 pick					# [..] seqnr fp "Cash" [..]
 first					# [..] seqnr fp "Cash" [..]
 second					# [..] seqnr fp "Cash" Cash
-"stdacct.txt" "a" fopen			# [..] seqnr fp "Cash" Cash fp
+"stdacct.txt" "ab" fopen		# [..] seqnr fp "Cash" Cash fp
 2 pick					# [..] seqnr fp "Cash" Cash fp "Cash"
 fput '\t fputch				# [..] seqnr fp "Cash" Cash fp
 swap					# [..] seqnr fp "Cash" fp Cash
@@ -105,7 +105,7 @@ std-Bank				# [..] seqnr fp Bank
 3 pick					# [..] seqnr fp "Bank" [..]
 first					# [..] seqnr fp "Bank" [..]
 second					# [..] seqnr fp "Bank" Bank
-"stdacct.txt" "a" fopen			# [..] seqnr fp "Bank" Bank fp
+"stdacct.txt" "ab" fopen		# [..] seqnr fp "Bank" Bank fp
 2 pick					# [..] seqnr fp "Bank" Bank fp "Bank"
 fput '\t fputch				# [..] seqnr fp "Bank" Bank fp
 swap					# [..] seqnr fp "Bank" fp Bank
@@ -143,8 +143,8 @@ over fput '\t fputch			# seqnr
 fclose					# [..] seqnr
 pop					# [..]
 pop					#
-[Jrn] unassign				# invalidate Jrn
-REGISTER-MENU PrintHeader;
+[Jrn] unassign;				# invalidate Jrn
+# REGISTER-MENU PrintHeader;
 
 memopost ==
 [jrntest]				# test everything is filled
@@ -155,7 +155,7 @@ memopost ==
     Print a posting from the year-end closure.
 *)
 yearendpost ==			# [acct "" amnt] seqnr
-"journal.txt" "a" fopen		# [acct "" amnt] seqnr fp
+"journal.txt" "ab" fopen	# [acct "" amnt] seqnr fp
 swap				# [acct "" amnt] fp seqnr
 fput '\t fputch 		# [acct "" amnt] fp -> seqnr
 over first fput '\t fputch	# [acct "" amnt] fp -> acct
@@ -169,7 +169,7 @@ fclose				#
     Print to the result account during year-end closure.
 *)
 yearfinish ==			# sum seqnr
-"journal.txt" "a" fopen		# sum seqnr fp
+"journal.txt" "ab" fopen	# sum seqnr fp
 swap				# sum fp seqnr
 fput '\t fputch			# sum fp -> seqnr
 Result fput '\t fputch		# sum fp -> Result

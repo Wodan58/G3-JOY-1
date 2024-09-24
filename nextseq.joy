@@ -1,7 +1,7 @@
 (*
     module  : nextseq.joy
-    version : 1.3
-    date    : 09/03/24
+    version : 1.4
+    date    : 09/18/24
 *)
 "numlib" libload.
 
@@ -13,7 +13,7 @@
 *)
 HIDE
 
-init-file == "journal.txt" "r" fopen [] [] [pop 1] ifte;
+init-file == "journal.txt" "rb" fopen [] [] [pop 1] ifte;
 is-filled == 0 2 fseek pop ftell;
 get-seqnr ==
 is-filled		# size

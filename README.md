@@ -10,19 +10,19 @@ Disclaimer
 ----------
 
 The source code currently meets the requirements of the application.
-The code itself is not a showcase of beautiful programming in Joy.
-There is room for improvement. This will be looked at when new
-requirements make it necessary to modify the code.
+The code itself is not a showcase of beautiful programming in Joy and
+after some cosmetic changes it is even more uglyfied than it was.
+This will be dealt with when there are new requirements.
 
 Running
 -------
 
-./g3 or: joy -kw menuin.joy
+joy -k menuin.joy
 
 Dependencies
 ------------
 
-Joy or: joy1
+Joy or joy1
 
 User manual
 -----------

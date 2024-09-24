@@ -1,7 +1,7 @@
 (*
     module  : accpost.joy
-    version : 1.5
-    date    : 06/28/24
+    version : 1.6
+    date    : 09/18/24
 *)
 
 LIBRA
@@ -38,7 +38,7 @@ filter-chars;	# also filter unwanted characters
 accpost ==		# input-screen
 [dup first second null]
 []			# no account number
-["account.txt" "a" fopen
+["account.txt" "ab" fopen
 over first second fput '\t fputch
 over third second trim fput '\t fputch
 over fourth second trim fput '\t fputch
@@ -46,5 +46,5 @@ over second second trim fput '\n fputch
 fclose
 [Acc] unassign]		# invalidate Acc
 ifte
-pop			# remove input-screen
-SETTINGS-MENU PrintHeader.
+pop.			# remove input-screen
+# SETTINGS-MENU PrintHeader.

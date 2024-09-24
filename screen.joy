@@ -1,7 +1,7 @@
 (*
     module  : screen.joy
-    version : 1.3
-    date    : 04/05/24
+    version : 1.5
+    date    : 09/19/24
 *)
 
 (*
@@ -14,7 +14,7 @@
 *)
 
 LIBRA
-(* row column; upper left is at (1,1) *)
+(* x, y; upper left is at (1,1) *)
 gotoxy == "\027[" putchars 'd 0 0 format putchars '; putch 'd 0 0 format
 	  putchars 'H putch;
 cursave == "\0277" putchars;
@@ -40,7 +40,7 @@ colcyan == "\027[1;36m" putchars;
 graphenable == "\027(0" putchars;
 graphdisable == "\027(B" putchars;
 
-(* str y x effect *)
+(* str x y effect *)
 print == rollup gotoxy [] [colred] [] ifte swap putchars [] [colwhite] [] ifte
 	 pop;
 
@@ -65,7 +65,7 @@ graphenable
 (* upper left *)
 'l putch
 
-(* horizontal line *)
+(* horizontal line: o,p,q,r,s *)
 over pred ['q putch] times
 
 (* upper right *)
@@ -80,7 +80,7 @@ dup pred pred ["x\n" putchars] times
 (* lower left *)
 'm putch
 
-(* horizontal line *)
+(* horizontal line: o,p,q,r,s *)
 over pred ['q putch] times
 
 (* lower right *)
@@ -114,3 +114,7 @@ printtwo == cursave [gotoxy] dip call colred swap putch putch colwhite
 
 (* print a string, with effect, at the current cursor position *)
 printstring == colred putchars colwhite.
+
+(* unit test *)
+# clrscr
+# 1 1 79 5 printbox.
