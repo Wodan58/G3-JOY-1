@@ -1,9 +1,9 @@
 @echo off
-:: the batch file is named "C:\Program Files ... \G3.bat" in %0; extract path.
-set inst=
-for /f "delims=" %%a in ("%0") do set inst=%%~da%%~pa
 setlocal enableextensions
 setlocal enabledelayedexpansion
+:: the batch file is named "C:\Program Files ... \G3.bat" in %0; extract path.
+set inst=
+for /f "delims=" %%a in (%0) do set inst=%%~da%%~pa
 :: if language file does not exist yet, it is copied to the working directory.
 if exist lang.joy goto skip
 set lang=
