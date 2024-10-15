@@ -1,7 +1,7 @@
 (*
     module  : functn.joy
-    version : 1.8
-    date    : 09/18/24
+    version : 1.9
+    date    : 09/25/24
 *)
 "numlib" libload.
 
@@ -572,7 +572,8 @@ sysdate datestr '\t swons
 ["" ""] cons concat swoncat
 1 [Xpos] assign 1 [Ypos] assign
 0 [Start] assign clrscr pager pop
-(* the next line only for reports w/o selection screen *)
+(* the next lines only for reports w/o selection screen *)
+clrscr
 PrintBox;
 # REPORTS-MENU PrintHeader;
 

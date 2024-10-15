@@ -22,7 +22,7 @@ joy -k menuin.joy
 Dependencies
 ------------
 
-Joy or joy1
+Joy, joy1, or Moy
 
 User manual
 -----------

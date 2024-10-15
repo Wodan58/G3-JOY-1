@@ -1,7 +1,7 @@
 (*
     module  : menuin.joy
-    version : 1.5
-    date    : 09/21/24
+    version : 1.7
+    date    : 10/12/24
 *)
 ["_usrlib" intern body null]
 ["\n\"usrlib.joy\" was not loaded\n" putchars quit]
@@ -127,7 +127,7 @@ submenu ==
 [0 do-day-menu do-std-menu do-rep-menu];
 
 (*
-    Test whether a submenu needs to be started. If the size of the stack is 4,
+    Test whether a submenu needs to be started. If the size of the stack is 6,
     then this is the main menu and there is a submenu. Otherwise it is already
     a submenu and the function needs to be started.
 *)
@@ -154,7 +154,7 @@ test-choice ==			# menu choice start row string ch
  [DARR pop incr-default]
  [LARR handle-left-arrow]	# quit only in main menu
  [RARR Default test-sub-menu]
- [pop choice-to-index test-sub-menu]
+ [pop dup first ord 48 - test-sub-menu]
 ] case;
 
 (*

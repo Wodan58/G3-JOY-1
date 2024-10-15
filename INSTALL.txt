@@ -1,0 +1,27 @@
+
+The installer, if there is one, creates two shortcuts on the desktop.
+One of them starts Joy, the other one starts a batch file that starts Joy.
+
+Just in case the batch file fails to execute, maybe because Windows is running
+in S-mode or maybe the Windows version is very old, here is the manual
+procedure that can be followed to start the G3 application:
+
+- First of all, a language file needs to be copied to the working directory.
+  The language files are located in the installation directory, in the
+  subdirectory `G3/lang`. One of them needs to be copied to the working
+  directory and renamed to `lang.joy`.
+
+- The second task is to create a shortcut to the Joy binary, possibly in the
+  working directory and maybe on the desktop. The command line in the shortcut
+  should call `joy.exe` with parameters "-k" and "G3/menuin.joy". The last one
+  uses a path relative to the installation directory. It is there that
+  menuin.joy is located. The working directory in the shortcut should point to
+  the directory where `lang.joy` is located.
+
+There is no option from within Joy to restart the executable with a different
+command line. That would be just as cumbersome as creating a shortcut and needs
+to be repeated every time that Joy is started.
+
+So, if the shortcut fails to execute, this manual procedure is the only way to
+access the G3 application. It needs to be followed only once.
+

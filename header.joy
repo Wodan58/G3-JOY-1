@@ -1,7 +1,7 @@
 (*
     module  : header.joy
-    version : 1.6
-    date    : 09/19/24
+    version : 1.7
+    date    : 09/25/24
 *)
 "screen.joy" include.
 "getkey.joy" include.
@@ -81,7 +81,7 @@ swap			# x-pos title
 PrintHeadAtX;		#
 
 PrintBox ==
-1 4 gotoxy clreoln
+# 1 4 gotoxy clreoln
 1 1 Cols pred 5 printbox;
 
 PrintHeader ==		# title
