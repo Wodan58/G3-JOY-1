@@ -1,6 +1,6 @@
 
-The installer, if there is one, creates two shortcuts on the desktop.
-One of them starts Joy, the other one starts a batch file that starts Joy.
+The installer, if there is one, creates a shortcut on the desktop.
+It starts a batch file that starts Joy.
 
 Just in case the batch file fails to execute, maybe because Windows is running
 in S-mode or maybe the Windows version is very old, here is the manual
