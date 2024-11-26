@@ -31,6 +31,11 @@ See chapters A-Z in:
 
 [User Manual (PDF)](https://github.com/Wodan58/G3/blob/master/JOP.pdf)
 
+Windows installer
+-----------------
+
+[G3-JOY-1](https://drive.google.com/file/d/1H8tQwsbWxKky1vSeNMp62w85CX0SPO3T/view?usp=drive_link)
+
 See also
 --------
 
