@@ -39,42 +39,42 @@ and the result is shown here.
 The download is supposed to be started from the link on the Github page,
 titled G3-JOY-1.
 
- ![](JOY-1.PNG)
+ ![](JOY-1.png)
 
 \pagebreak
 
 Google does not know how to display the contents. That is ok, the contents of
 an .exe file is quite complicated.
 
- ![](JOY-2.PNG)
+ ![](JOY-2.png)
 
 \pagebreak
 
 The next step is to press the download key and that leads to the following
 screen, that says that the .exe is an executable and can harm the computer.
 
- ![](JOY-3.PNG)
+ ![](JOY-3.png)
 
 \pagebreak
 
 The 'save as' option should be chosen first. This is still harmless, as no
 code is executed.
 
- ![](JOY-4.PNG)
+ ![](JOY-4.png)
 
 \pagebreak
 
 After pressing the 'save as' option, there is another warning, telling that
 this particular file is unknown and should only be opened, when trusted.
 
- ![](JOY-5.PNG)
+ ![](JOY-5.png)
 
 \pagebreak
 
 The way to open it, is to click on the ellipsis next to the message and to
 press the 'save' button.
 
- ![](JOY-6.PNG)
+ ![](JOY-6.png)
 
 \pagebreak
 
@@ -82,39 +82,39 @@ The text warns that an .exe file can be dangerous and downloading should only
 be done if the user understands the risks. The only way to proceed is by
 pressing the 'more' button.
 
- ![](JOY-7.PNG)
+ ![](JOY-7.png)
 
 \pagebreak
 
 The 'more' button expands the screen and the way to proceed is by pressing the
 'keep' button.
 
- ![](JOY-8.PNG)
+ ![](JOY-8.png)
 
 \pagebreak
 
 The download is finally going on.
 
- ![](JOY-9.PNG)
+ ![](JOY-9.png)
 
 \pagebreak
 
 When done, there is the possibility to execute the installer.
 
- ![](JOY-10.PNG)
+ ![](JOY-10.png)
 
 \pagebreak
 
 Doing that triggers the Microsoft Defender to come into action.
 
- ![](JOY-11.PNG)
+ ![](JOY-11.png)
 
 \pagebreak
 
 The only way to proceed is by pressing the 'more info' button.
 In this screen it becomes possible to trigger the installer.
 
- ![](JOY-12.PNG)
+ ![](JOY-12.png)
 
 \pagebreak
 
