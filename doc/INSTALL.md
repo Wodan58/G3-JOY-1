@@ -213,7 +213,7 @@ arrow key.
 
 And then the left arrow key. This ends the screen and also the application.
 As can be seen the texts are in Dutch, because the Windows version is also
-Ducth. On a Windows in any other language, the English translation file will
+Dutch. On a Windows in any other language, the English translation file will
 be installed in the working directory.
 
  ![](G3-8.PNG)
