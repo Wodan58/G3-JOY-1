@@ -4,11 +4,12 @@
 Introduction
 ============
 
-Instead of downloading and compiling the source code of Joy, it should be
-possible to present an installer for the Windows operating system.
+Downloading and compiling the source code of Joy is one way to install the
+software on a system. Another way is an installer program, although that one
+is available only for Windows.
 
-Such an installer can be created with Visual Studio 2022, but using the
-installer proved to be a frightening experience.
+The installer was created with NSIS. Downloading and installing is still a
+frightening experience.
 
 The many steps that are needed are shown in pictures.
 
@@ -22,8 +23,10 @@ using the tiny C compiler. The result is shown in this picture.
 
 Instead of the many sections that the gcc compiler generates, this one has
 only .text and .data. That is more like Joy. It is a 32-bits binary, usable
-on almost any Windows version. The 64-bits binary has one more section,
+on almost all Windows versions. The 64-bits binary had one more section,
 containing read-only data.
+
+\pagebreak
 
 As this is a binary for the Windows system, it is possible to add an Icon that
 will be displayed here and there. ResourceHacker can be used to add that Icon
@@ -31,137 +34,195 @@ and the result is shown here.
 
  ![](Joy2.PNG)
 
-There are two possible ways to download: directly from the G-drive or through
-a link in the browser. The first method is presented here and the latter will
-be presented later on.
+\pagebreak
 
- ![](Joy3.PNG)
+The download is supposed to be started from the link on the Github page,
+titled G3-JOY-1.
 
-The text warns that an .msi file can be dangerous and downloading should only
-be done if the user understands the risks. There is disagreement possible:
-an .msi file is a kind of .zip file that does nothing, if it is only downloaded.
+ ![](JOY-1.PNG)
 
- ![](Joy5.PNG)
-
-After downloading there is another warning, telling that this particular file
-is unknown and should only be opened, when trusted.
-
- ![](Joy4.PNG)
-
-The way to open it, is to click on the ellipsis next to the message. This
-causes the Microsoft Defender to give a warning that it cannot check whether
-the file is save to be used.
-
- ![](Joy6.PNG)
-
-The only way to proceed is to press on the text that says: display more.
-That gives the same text again and offers the possibility to keep the file.
-
- ![](Joy7.PNG)
-
-Then the Windows installer is triggered, the program that takes the .msi file
-and installs the software. The message shown here tells that the program has
-already been installed. That means that the previous version must be removed
-first. This is a standard Windows operating procedure, not shown here.
-
- ![](Joy8.PNG)
-
-And then the virus scanner prevents further installation. The only way to get
-around this is to disable the virus scanner, but that is not all. More about
-this later on.
-
-The second method is to follow a direct link to the Google Drive, where the
-installer is located and download it from there. That gives the following
-picture:
-
- ![](Joy10.PNG)
+\pagebreak
 
 Google does not know how to display the contents. That is ok, the contents of
-an .msi file is quite complicated.
+an .exe file is quite complicated.
+
+ ![](JOY-2.PNG)
+
+\pagebreak
 
 The next step is to press the download key and that leads to the following
-screen, that says that the .msi is an executable and can harm the computer.
-Again, an .msi file is a kind of .zip file. It can contain executables, but
-it is itself not an executable.
+screen, that says that the .exe is an executable and can harm the computer.
 
- ![](Joy11.PNG)
+ ![](JOY-3.PNG)
 
-And then the virus scanner kicks in, preventing the download.
+\pagebreak
 
- ![](Joy12.PNG)
+The 'save as' option should be chosen first. This is still harmless, as no
+code is executed.
 
-As stated before, the only way to download the file, is to first disable the
-virus scanner. It can be enabled later on, after the installation is completed.
+ ![](JOY-4.PNG)
 
-The next message comes from the Microsoft installer that says that the PC is
-protected and offers to not continue.
+\pagebreak
 
- ![](Joy21.PNG)
+After pressing the 'save as' option, there is another warning, telling that
+this particular file is unknown and should only be opened, when trusted.
 
-The only way to continue is to press on the text that offers more information.
+ ![](JOY-5.PNG)
 
- ![](Joy22.PNG)
+\pagebreak
 
-It says that the .msi file is from an unknown publisher. That, of course, is
-not true. The publisher is mentioned in the .msi file. What is meant is that
-the .msi file has not been signed by a verified company. Pressing on the left
-button finally starts the installation.
+The way to open it, is to click on the ellipsis next to the message and to
+press the 'save' button.
 
- ![](Joy14.PNG)
+ ![](JOY-6.PNG)
 
-The installation is in English, not the local language. It is possible to
-change the location. The standard location starts with "Program Files (x86)",
-because it is a 32-bit binary that is included in the .msi file. On a 32-bit
-Windows system, the location would be just "Program Files". There are two
-subdirecties here, but that does not really matter, as the shortcut that will
-be created points to the correct installation directory.
+\pagebreak
 
- ![](Joy15.PNG)
+The text warns that an .exe file can be dangerous and downloading should only
+be done if the user understands the risks. The only way to proceed is by
+pressing the 'more' button.
 
-The next step still offers the possibility not to install the software. Having
-gone this far, it might as well be best to proceed. Installing is still
-harmless, as it only copies files from the .msi file to the installation
-directory. Nothing is actually executed.
+ ![](JOY-7.PNG)
 
- ![](Joy16.PNG)
+\pagebreak
 
-Finally, the last screen of the installation. The installation directory is now
-filled and can be inspected in order to see what it has to offer.
+The 'more' button expands the screen and the way to proceed is by pressing the
+'keep' button.
 
- ![](Joy19.PNG)
+ ![](JOY-8.PNG)
 
-There is a batch file that starts the G3 application, there is an internet
-link to the G3 repository on Github, where some documentation is located,
-there is the Joy binary and there is usrlib.joy, the initial library file.
+\pagebreak
 
- ![](Joy20.PNG)
+The download is finally going on.
 
-On the desktop, two links have been created, one points to the G3 batch file,
-the other points to the Joy binary.
+ ![](JOY-9.PNG)
 
-The links themselves are not very interesting. They mention the working
-directory, currently the Desktop.
+\pagebreak
 
-What is interesting is that through the Joy link, Joy can be started.
+When done, there is the possibility to execute the installer.
 
- ![](Joy17.PNG)
+ ![](JOY-10.PNG)
 
-As stated before, it is a 32-bit binary. Even so, it supports 64-bit
-computation, why not. 64-bit is now the standard. But this is not the end
-of the story. The virus scanner was disabled, and needs to be enabled again.
+\pagebreak
 
-After doing so, when starting Joy again, the virus scanner kicks in and
-prevents execution of Joy and the file is removed.
+Doing that triggers the Microsoft Defender to come into action.
 
- ![](Joy18.PNG)
+ ![](JOY-11.PNG)
 
-So, in order to make the installation complete, the Joy binary must be
-registered as an exception to the virus scanner. And the installation must
-be done again, because the Joy binary was deleted by the virus scanner.
+\pagebreak
 
- ![](Joy9.PNG)
+The only way to proceed is by pressing the 'more info' button.
+In this screen it becomes possible to trigger the installer.
 
-The virus scanner is now satisfied.
+ ![](JOY-12.PNG)
+
+\pagebreak
+
+Before the first screen of the installer, there is a screen
+that asks confirmation. Only the administrator of a Windows
+PC can do the installation.
+
+ ![](NSIS-1.PNG)
+
+\pagebreak
+
+The LICENSE is shown. It says that this is Copyrighted software
+that comes without warranty.
+
+ ![](NSIS-2.PNG)
+
+\pagebreak
+
+The installation location is shown. It can probably be modified,
+but that has not been tested.
+
+ ![](NSIS-3.PNG)
+
+\pagebreak
+
+A map is proposed in the start menu where links to the programs
+are displayed.
+
+ ![](NSIS-4.PNG)
+
+\pagebreak
+
+After installing, it does not take long, this screen ends the
+installation procedure.
+
+ ![](NSIS-5.PNG)
+
+\pagebreak
+
+The installer places an icon on the desktop. After starting G3
+from that icon the splash screen is shown with standard settings
+of the Windows console application.
+
+ ![](G3-1.PNG)
+
+\pagebreak
+
+The standard needs to be modified. This can be done while the G3
+program is running. It can also be done in the shortcut itself.
+The properties page shows 5 tabs and a lot of checkboxes.
+
+ ![](G3-2.PNG)
+
+\pagebreak
+
+The font selection and size of the font can be adjusted, if so desired.
+The font settings as they are seem ok.
+
+ ![](G3-3.PNG)
+
+\pagebreak
+
+The 9001 in this picture is way too large. And the screen width and height
+need to be changed into 80x25, because that is what the program was designed
+for.
+
+ ![](G3-4.PNG)
+
+\pagebreak
+
+The first tab again with all checkboxes cleared. Buffersize and number of
+buffers is set to 0. This will be changed to 1 by the system. The codetable
+65001 was set by the application. It is not visible when the desktop shortcut
+is modified without starting G3.
+
+ ![](G3-5.PNG)
+
+\pagebreak
+
+As can be seen here, the screen size is set to 80x25. That is what G3 uses and
+needs.
+
+ ![](G3-6.PNG)
+
+\pagebreak
+
+This is the effect when the application is running. It probably receives a
+redraw message from Windows, but G3 is not listening to Windows. It wants to
+tell Windows what should be done, not the other way around. The only solution
+is to restart the program and that can be realized by first pressing the right
+arrow key.
+
+ ![](G3-7.PNG)
+
+\pagebreak
+
+And then the left arrow key. This ends the screen and also the application.
+As can be seen the texts are in Dutch, because the Windows version is also
+Ducth. On a Windows in any other language, the English translation file will
+be installed in the working directory.
+
+ ![](G3-8.PNG)
+
+\pagebreak
+
+After restarting the application, everything should look normal.
+
+ ![](G3-9.PNG)
 
 Conclusion
 ==========
@@ -172,5 +233,3 @@ continue from there.
 
 Compilation with tcc means that the makefile needs to be adjusted:
 tcc instead of gcc and the -lm in the linker flags can be removed.
-
-Tcc links with msvcrt.dll, that is present on all Windows systems.
