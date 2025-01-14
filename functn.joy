@@ -1,7 +1,7 @@
 (*
     module  : functn.joy
-    version : 1.9
-    date    : 09/25/24
+    version : 1.10
+    date    : 01/14/25
 *)
 "numlib" libload.
 
@@ -496,9 +496,9 @@ swons			# [prompt volgnr 18 7 wordin]
 swons;
 
 (*
-    Wanneer het volgnr wordt ingevoerd moet de journaalpost worden ingelezen.
-    De case leest alleen de eerste regel, maar wellicht is dat voldoende?
-    De code gaat er op dit moment vanuit dat het volgnr gevonden wordt.
+    The posting is read after input of the sequence number. Only the first line
+    is read, maybe that is sufficient? The code currently assumes that the
+    sequence number can be found.
 *)
 test-volgnr ==	# [..] [.] var ch
 over		# [..] [.] var ch var
@@ -516,7 +516,8 @@ case		# [..] [.] var ch tekst accnt date amount
 [pop pop pop]	# [..] [.] var ch
 [
 (*
-    Vanaf hier moet het scherm opnieuw opgebouwd worden, met daarin de vars.
+    From here on forwards, the screen needs to be rebuild, including the value
+    of the variables.
 *)
 update-screen-4	# [..] [.] var ch tekst accnt date amount [..]
 dup

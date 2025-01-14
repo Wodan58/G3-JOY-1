@@ -1,7 +1,7 @@
 (*
     module  : formin.joy
-    version : 1.2
-    date    : 06/25/24
+    version : 1.3
+    date    : 01/14/25
 *)
 "editln.joy" include.
 "textin.joy" include.
@@ -9,9 +9,9 @@
 "wordin.joy" include.
 
 (*
-    Een scherm werkt ongeveer hetzelfde als een menu. Het verschil is dat het
-    keuze-veld meedraait in de volgorde van up en down. Alleen in het keuze
-    veld kan het scherm verlaten worden.
+    A screen is about the same as a menu. The difference is that the Choice
+    field participates in the cursor up/down navigation. The screen can be
+    left only if the cursor is in the Choice field.
 *)
 LIBRA
 

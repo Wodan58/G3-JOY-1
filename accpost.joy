@@ -1,13 +1,13 @@
 (*
     module  : accpost.joy
-    version : 1.6
-    date    : 09/18/24
+    version : 1.7
+    date    : 01/14/25
 *)
 
 LIBRA
 
 (*
-    Some unwanted characters are deleted: " and \. The reason is that is would
+    Some unwanted characters are deleted: " and \. The reason is that it would
     or could break a string as defined in Joy. It doesn't seem necessary to
     support these two characters.
 *)
