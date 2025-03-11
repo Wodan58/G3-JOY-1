@@ -1,0 +1,219 @@
+(*
+    module  : cash.joy
+    version : 1.5
+    date    : 02/20/25
+*)
+
+(*
+    See if the account exists and if it does, display its description.
+    The data structure need not be updated.
+
+    Also check the VAT code. If present, calculate the VAT amount and the
+    VAT account. Store the VAT amount in the data structure and post the VAT
+    account in global variable _Account. Both VAT percentage and VAT account
+    are expected to be attached to the VAT code. If not, mayhem results.
+*)
+cash_acct ==	(* [..] index [.] var ch *)
+over		(* [..] index [.] var ch var *)
+init_Acc _Acc	(* [..] index [.] var ch var _Acc *)
+case		(* [..] index [.] var ch type VAT descr *)
+["" =]		(* an empty description means that the account was not found *)
+[5 [pop] times]	(* [..] index [.] var ch *)
+(*
+    If the account was found, the description can be displayed.
+*)
+[41		(* [..] index [.] var ch type VAT descr 41 *)
+6 pick		(* [..] index [.] var ch type VAT descr 41 [.] *)
+3 at		(* [..] index [.] var ch type VAT descr 41 9/10 *)
+over
+over
+gotoxy
+clreoln
+false		(* [..] index [.] var ch type VAT descr 41 9/10 false *)
+print		(* [..] index [.] var ch type VAT *)
+popd		(* [..] index [.] var ch VAT *)
+["" =]		(* an empty VAT code means that no VAT needs to be calculated *)
+[pop]		(* [..] index [.] var ch *)
+(*
+    If there is a VAT code, it is used to locate both an account and a
+    percentage. It is assumed that both are present. If not, the program
+    misbehaves.
+*)
+[dup		(* [..] index [.] var ch VAT VAT *)
+init_Std _Std
+case
+[_Account]
+assign		(* [..] index [.] var ch VAT *)
+init_Prc _Prc
+case		(* [..] index [.] var ch perc *)
+5 pick		(* [..] index [.] var ch perc [..] *)
+(*
+    The percentage is used to calculate the VAT amount, that is then stored
+    in the screen data structure. That structure has 5 or 6 lines. The VAT
+    amount is at index 3 or 4. The amount itself is at index 1 or 2.
+*)
+dup size 4 - at	(* [..] index [.] var ch perc [.] *)
+first		(* [..] index [.] var ch perc amnt *)
+dup 10000 *	(* [..] index [.] var ch perc amnt amnt*10000 *)
+rolldown	(* [..] index [.] var ch amnt amnt*10000 perc *)
+10000 +		(* [..] index [.] var ch amnt amnt*10000 perc+10000 *)
+dup		(* [..] index [.] var ch amnt amnt*10000 perc+10000 perc+10000*)
+(*
+    What must be added or subtracted is the divisor divided by 2.
+    The divisor is the percentage + 10000.
+*)
+[2 /
+[pop positive]
+[+] [-] ifte
+] dip		(* [..] index [.] var ch amnt amnt*10000+/-0.5 perc+10000 *)
+/ -		(* [..] index [.] var ch VAT-amnt *)
+5 pick		(* [..] index [.] var ch VAT-amnt [..] *)
+dup size 2 - at	(* [..] index [.] var ch VAT-amnt [.] *)
+rest cons	(* [..] index [.] var ch [.] *)
+(*
+    The line with the VAT amount must now be inserted in the screen data.
+*)
+5 pick		(* [..] index [.] var ch [.] [..] *)
+dup		(* [..] index [.] var ch [.] [..] [..] *)
+[dup size 2 -
+take] dip	(* [..] index [.] var ch [.] [..] [..] *)
+dup size pred
+drop		(* [..] index [.] var ch [.] [..] [..] *)
+enconcat	(* [..] index [.] var ch [..] *)
+account_update	(* [..] index [.] var ch [..] *)
+pop]		(* [..] index [.] var ch *)
+ifte]		(* VAT code was found *)
+ifte;		(* account was found *)
+
+(* cash entry, either initial or screen *)
+cash_entry ==
+"Cash" [_Standard] assign
+cash_standard	(* read standard Cash account *)
+(*
+    If not found, the result will be 0.
+    In both cases the account can be removed.
+*)
+[0 =] [pop cash_initial] [pop cash_screen] ifte;
+
+(* cash initial *)
+cash_initial ==
+
+CASH_SCREEN entry
+
+[[0   CASH_ACCOUNT 20  7 wordin]
+ [0   DATE         20  8 datein]
+ [0   AMOUNT       20  9 amount]
+ [0   ACCOUNT      20 10 wordin cash_acct]
+ [0   VAT_AMOUNT   20 11 amount]
+ [" " YOUR_CHOICE  20 13 textin cash_zzz]]
+
+input_text input_loop;
+
+(*
+    This is a posting from the Cash standard account.
+*)
+cash_post ==			(* [..] ... *)
+[journal_test]			(* test everything is filled *)
+[4 pick				(* [..] *)
+ journal_seqnr			(* [..] seqnr *)
+ "journal.txt" "ab" fopen	(* [..] seqnr fp *)
+ over fput '\009 fputch		(* [..] seqnr fp -> seqnr *)
+ cash_standard			(* [..] seqnr fp Cash *)
+(*
+    If this is the first time that Cash is used, then the standard setting may
+    not be present and must be added.
+*)
+ [0 =]
+ [pop				(* [..] seqnr fp *)
+  "stdacct.txt" "ab" fopen	(* [..] seqnr fp fp *)
+  _Standard			(* [..] seqnr fp fp "Cash" *)
+  fput '\009 fputch		(* [..] seqnr fp fp *)
+  3 pick			(* [..] seqnr fp fp [..] *)
+  first				(* [..] seqnr fp fp [.] *)
+  first				(* [..] seqnr fp fp Cash *)
+  fput '\010 fputch		(* [..] seqnr fp fp *)
+  fclose			(* [..] seqnr fp *)
+  exit_Std
+  rotate			(* fp seqnr [..] *)
+  rest				(* fp seqnr [..] *)
+  rotate			(* [..] seqnr fp *)
+  cash_standard]		(* [..] seqnr fp Cash *)
+ [] ifte cash_rest]
+[] ifte;
+
+(*
+    Cash and Bank are similar postings. Only the standard account is different.
+    initpost only outputs the sequence number.
+*)
+
+(*
+    cash_rest posts the rest of the posting. The screen data structure is given
+    as parameter. The first line of the initial screen is removed, keeping the
+    offsets the same.
+
+    DATE
+    AMOUNT
+    ACCOUNT
+    VAT_AMOUNT
+*)
+cash_rest ==				(* [..] seqnr fp Cash *)
+fput '\009 fputch			(* [..] seqnr fp -> Cash *)
+2 pick first first fput '\009 fputch	(* [..] seqnr fp -> date *)
+2 pick second first fput '\010 fputch	(* [..] seqnr fp -> amnt *)
+over fput '\009 fputch			(* [..] seqnr fp -> seqnr *)
+2 pick third first fput '\009 fputch	(* [..] seqnr fp -> accnt *)
+2 pick first first fput '\009 fputch	(* [..] seqnr fp -> date *)
+2 pick second first			(* [..] seqnr fp amnt *)
+3 pick fourth first			(* [..] seqnr fp amnt VAT-amnt *)
+- neg					(* [..] seqnr fp amnt (corr,neg) *)
+fput '\010 fputch			(* [..] seqnr fp -> amnt *)
+(*
+    Take the VAT-accnt from the global variable _Account. The fourth line
+    contains the VAT amount.
+*)
+2 pick fourth first			(* [..] seqnr fp VAT-amnt *)
+[0 =]
+[pop]					(* [..] seqnr fp *)
+[swap					(* [..] seqnr VAT-amnt fp *)
+ 2 pick fput '\009 fputch		(* [..] seqnr VAT-amnt fp -> seqnr *)
+ _Account fput '\009 fputch		(* [..] seqnr VAT-amnt fp -> accnt *)
+ 3 pick first first fput '\009 fputch	(* [..] seqnr VAT-amnt fp -> date *)
+ swap neg				(* [..] seqnr fp VAT-amnt (negated) *)
+ fput '\010 fputch]			(* [..] seqnr fp -> VAT-amnt *)
+ifte
+fclose					(* [..] seqnr *)
+pop					(* [..] *)
+pop					(* *)
+exit_Jrn;				(* invalidate _Jrn *)
+
+(* cash screen *)
+cash_screen ==
+
+CASH_SCREEN entry
+
+[[0   DATE        20  7 datein]
+ [0   AMOUNT      20  8 amount]
+ [0   ACCOUNT     20  9 wordin cash_acct]
+ [0   VAT_AMOUNT  20 10 amount]
+ [" " YOUR_CHOICE 20 12 textin cash_zzz]]
+
+input_text input_loop;
+
+(*
+    Read the standard cash account. When found, the account number will
+    be on top. When not found, 0 will be on top followed by "Cash" and "".
+    These strings need to be removed.
+*)
+cash_standard ==
+_Standard		(* read standard Cash/Bank account *)
+init_Std _Std
+case
+[0 =]
+[pop3 0]		(* when not found: remove strings and reinstall 0 *)
+[] ifte;
+
+(*
+    Only post in response to RARR, and when everything is filled in correctly.
+*)
+cash_zzz ==
+[ZRARR =] [cash_post] [] ifte;

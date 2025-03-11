@@ -1,0 +1,9 @@
+(*
+    module  : clear.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+clreod == "\027[J" putchars;
+clreoln == "\027[K" putchars;
+clrscr == curhome clreod;

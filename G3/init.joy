@@ -1,0 +1,30 @@
+(*
+    module  : init.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+init_Acc ==
+["_Acc" intern body null]
+[read_Acc [_Acc] assign] [] ifte
+;	(* account.txt *)
+
+init_Jrn ==
+["_Jrn" intern body null]
+[read_Jrn [_Jrn] assign] [] ifte
+;	(* journal.txt *)
+
+init_Prc ==
+["_Prc" intern body null]
+[read_Prc [_Prc] assign] [] ifte
+;	(* percent.txt *)
+
+init_Std ==
+["_Std" intern body null]
+[read_Std [_Std] assign] [] ifte
+;	(* stdacct.txt *)
+
+init_Txt ==
+["_Txt" intern body null]
+[read_Txt [_Txt] assign] [] ifte
+;	(* textblk.txt *)

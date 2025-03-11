@@ -1,0 +1,70 @@
+(*
+    module  : ledger.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+ledger_entry ==
+
+LEDGER_VIEW_SCREEN entry
+
+[[0   DATE_FROM   20  7 datein]
+ [0   DATE_TO     59  7 datein]
+ [0   SEQNR_FROM  20  8 wordin]
+ [0   SEQNR_TO    59  8 wordin]
+ [0   ACCOUNT     20  9 wordin general_acct]
+ [" " YOUR_CHOICE 20 11 textin ledger_zzz]]
+
+input_text input_loop;
+
+(*
+    The ledger view reads all journal entries and displays them on the screen.
+    Postings limited to one account with a summary at the end.
+*)
+ledger_view ==
+
+(* transactions *)
+LEDGER_VIEW_SCREEN
+
+(* common part of report handling *)
+view_entry
+
+(*
+    Read journal.txt into a list of records.
+    The descriptions are also added.
+*)
+init_Txt _Txt
+init_Jrn _Jrn popd
+test_trailer
+
+(*
+    The filter is applied, possibly reducing the amount of lines.
+*)
+[second _Account =] filter		(* filter account *)
+filter_apply
+
+dup
+
+[fourth] map sum
+
+swap
+
+write_Jrn
+
+["\009\009\009--------------------------\010"] concat
+
+swap
+
+amount_right "\009" BALANCE "\009\009" concat
+concat swoncat "\010" concat unitlist concat
+
+page_entry pop;	(* remove false *)
+
+(*
+    The filter is read into global variables, making life easier.
+*)
+ledger_zzz ==
+4 pick
+dup fifth first [_Account] assign	(* account number *)
+filter_read
+[ZRARR =] [ledger_view] [] ifte;

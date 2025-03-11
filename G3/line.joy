@@ -1,0 +1,8 @@
+(*
+    module  : line.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+(* xh yh xl yl *)
+horizontal == over 4 pick - ['q putch] times;

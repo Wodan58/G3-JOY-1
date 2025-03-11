@@ -1,0 +1,182 @@
+(*
+    module  : account.joy
+    version : 1.3
+    date    : 02/24/25
+*)
+
+(*
+    Data entry of a (new) account.
+*)
+account_entry ==
+
+ACCOUNT_SCREEN entry
+
+[[0   ACCOUNT     20  7 wordin account_test]
+ ["                                        " DESCRIPTION  20  8 textin]
+ ["                                        " ACCOUNT_TYPE 20  9 textin]
+ ["                                        " VAT_CODE     20 10 textin]
+ [" " YOUR_CHOICE 20 12 textin account_post]]
+
+input_text input_loop;
+
+(*
+    Locate an account in a list of accounts.
+    Return the index or -1 when not found.
+*)
+account_find ==		(* reknr reklist *)
+[null not]
+[unswons		(* reknr reklist rekitem *)
+ first			(* reknr reklist reknr *)
+ [2 pick =]		(* reknr reklist t/f *)
+ [pop []]		(* reknr reklist [] -> found *)
+ [pop]			(* reknr reklist -> not yet found *)
+ ifte] while		(* reknr reklist [] *)
+pop			(* reknr reklist *)
+[-1]			(* reknr -1 -> not found *)
+[size]			(* reknr size -> size of remaining reklist *)
+ifinteger;		(* reknr size *)
+
+(*
+    Build a list of accounts, w/o duplicates, sorted from low to high.
+*)
+account_list ==
+bs_new			(* create a set *)
+init_Acc _Acc		(* read accounts with possible duplicates *)
+[first] map		(* select only account numbers *)
+[bs_insert] step	(* build a list of unique account numbers *)
+[_Acc] dip		(* [] [..] keys *)
+[swap			(* [] key [..] *)
+dupd			(* [] key key [..] *)
+dup			(* [] key key [..] [..] *)
+[case			(* [] key values *)
+4 wrap			(* [] [.] *)
+swons			(* [] *)
+] dip]			(* [..] *)
+step pop popd;		(* [..] *)
+
+(*
+    merge the account that was found with the screen data structure.
+
+    [..] index [.] var ch [..] type VAT descr
+*)
+account_merge ==
+rollup			(* var ch [..] descr type VAT *)
+[] cons			(* var ch [..] descr type [VAT] *)
+cons			(* var ch [..] descr [type VAT] *)
+cons			(* var ch [..] [descr type VAT] *)
+
+[dup size
+ 40 swap -		(* fill descriptions up to 40 characters *)
+ spaces concat]
+map			(* var ch [..] [type VAT descr] *)
+
+3 pick			(* var ch [..] [type VAT descr] var *)
+swons			(* var ch [..] [var type VAT descr] *)
+[" "] concat		(* var ch [..] [var type VAT descr " "] *)
+
+[[rest] map] dip
+
+zip;			(* var ch [..] *)
+
+(*
+    If everything is filled in correctly, the record can be posted. What must
+    be present is the unique the account number and the description.
+*)
+account_post ==		(* [..] index [.] var ch *)
+[ZRARR =]
+[4 pick			(* [..] *)
+[dup first first 0 =
+ swap second first trim
+ "" = or] []		(* no account number or empty description *)
+[post_Acc] ifte pop]	(* remove screen copy *)
+[] ifte;
+
+(*
+    Display chart of accounts.
+*)
+account_show ==
+
+(* chart of accounts *)
+CHART_ACCOUNTS_SCREEN
+
+(* common part of report handling *)
+view_entry
+
+(*
+    Read account.txt into a list of records, converted to strings.
+*)
+account_list
+test_trailer
+
+(*
+    Read filter of account numbers.
+*)
+5 pick first first [_BegSeq] assign
+5 pick second first [0 =] [pop maxint] [] ifte [_EndSeq] assign
+
+(*
+    Apply filter of account numbers.
+*)
+[first dup _BegSeq >= swap _EndSeq <= and] filter
+
+write_Acc
+
+(* common part of report handling *)
+page_entry pop;		(* remove false *)
+
+(*
+    validate account entered
+
+    See if the account exists and if it does, display its contents. Not only
+    the contents should be displayed; the data structure should be updated as
+    well, such that the contents can be modified instead of entered again.
+*)
+account_test ==		(* [..] index [.] var ch *)
+4 pick			(* [..] index [.] var ch [..] *)
+2 pick			(* [..] index [.] var ch [..] var *)
+init_Acc _Acc		(* [..] index [.] var ch [..] var _Acc *)
+case			(* [..] index [.] var ch [..] type VAT descr *)
+(*
+    When found, the account must be split in its constituent parts and shown.
+    The original data structure must also be updated. Description is mandatory,
+    that is why the test on "" is sufficient. But if not found, the variable is
+    still there and needs to be popped as well.
+*)
+["" =]
+[6 [pop] times]
+[account_merge		(* [..] index [.] var ch [..] *)
+ account_update
+ input_show]
+ifte;			(* [..] index [.] var ch *)
+
+(*
+    The account screen data structure needs to be updated as well.
+*)
+account_update ==	(* [..] index [.] var ch [..] *)
+[4 wrap] dip		(* [..] [.] [..] *)
+dup			(* [..] [.] [..] [..] *)
+rotated			(* [..] [.] [..] [..] *)
+popd			(* [..] [.] [..] *)
+[unwrap] dip;		(* [..] index [.] var ch [..] *)
+
+(*
+    Selection screen of chart of accounts.
+*)
+account_view ==
+
+CHART_ACCOUNTS_SCREEN entry
+
+[[0   ACCOUNT_FROM 20 7 wordin]
+ [0   ACCOUNT_TO   59 7 wordin]
+ [" " YOUR_CHOICE  20 9 textin account_zzz]]
+
+input_text input_loop;
+
+(*
+    16 pick can be used to retrieve the number of lines on the screen.
+    4 pick can be used to get access to first/last account number.
+    This can be used as a filter after reading the file, or better yet,
+    as a filter during reading the file.
+*)
+account_zzz ==
+[ZRARR =] [account_show] [] ifte;

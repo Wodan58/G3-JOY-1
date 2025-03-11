@@ -1,0 +1,70 @@
+(*
+    module  : langEN.joy
+    version : 1.4
+    date    : 02/10/25
+*)
+
+ACCOUNT               == "account        :";
+ACCOUNTING_MADE_EASY  == "Accounting Made Easy";
+ACCOUNT_FROM          == "2nd account    :";
+ACCOUNT_SCREEN        == "CREATE ACCOUNT";
+ACCOUNT_TO            == "1st account    :";
+ACCOUNT_TYPE          == "account type   :";
+AMOUNT                == "amount         :";
+BALANCE               == "Balance";
+BALANCE_SHEET         == "7. balance sheet";
+BALANCE_SHEET_SCREEN  == "BALANCE SHEET";
+BANK                  == "2. bank";
+BANK_ACCOUNT          == "bank           :";
+BANK_SCREEN           == "BANK";
+CASH                  == "1. cash";
+CASH_ACCOUNT          == "cash           :";
+CASH_SCREEN           == "CASH";
+CHART_ACCOUNTS        == "1. chart of accounts";
+CHART_ACCOUNTS_SCREEN == "CHART OF ACCOUNTS";
+CREATE_ACCOUNT        == "1. create account";
+DATE                  == "date           :";
+DATE_FROM             == "first date     :";
+DATE_TO               == "last date      :";
+DESCRIPTION           == "description    :";
+GENERAL_SCREEN        == "GENERAL TRANSACTION";
+GENERAL_TRANSACTION   == "3. general transaction";
+INTRO_MENU            == "ACCOUNTING";
+LEDGER_VIEW           == "5. ledger view";
+LEDGER_VIEW_SCREEN    == "LEDGER VIEW";
+MAIN_MENU             == "MAIN MENU";
+NET_LOSS              == "Net Loss";
+NET_PROFIT            == "Net Profit";
+NOTES                 == "notes          :";
+NOTES_MENU            == "4. notes";
+NOTES_SCREEN          == "NOTES";
+PERCENTAGES_MENU      == "3. input percentages";
+PERCENTAGES_SCREEN    == "PERCENTAGES";
+PRESS_TO_CONTINUE     == "Press -> to continue...";
+PRESS_TO_LEAVE        == "Press <- to leave screen...";
+PROFIT_AND_LOSS       == "6. profit & loss";
+PROFIT_LOSS_SCREEN    == "PROFIT & LOSS";
+REGISTER              == "1. register";
+REGISTER_MENU         == "REGISTER";
+REPORTS               == "3. reports";
+REPORTS_MENU          == "REPORTS";
+SEQNR                 == "seqnr          :";
+SEQNR_FROM            == "first seqnr    :";
+SEQNR_TO              == "last seqnr     :";
+SETTINGS              == "2. settings";
+SETTINGS_MENU         == "SETTINGS";
+STANDARDS_MENU        == "2. standard accounts";
+STANDARD_ACCOUNTS     == "STANDARD ACCOUNTS";
+STANDARD_SCREEN       == "STANDARD ACCOUNT";
+TRANSACTION_JOURNAL   == "4. transaction journal";
+TRANSACTION_SCREEN    == "TRANSACTION JOURNAL";
+UPPER_LEFT	      == "\208\173\208\187\209\143 KAPSALON";
+UPPER_RIGHT	      == "G3";
+VAT_AMOUNT            == "VAT amount     :";
+VAT_CODE              == "VAT code       :";
+VAT_PERCENTAGE        == "VAT %          :";
+VERSION               == "version";
+YEAR_CLOSING_MENU     == "5. year end closing";
+YEAR_CLOSING_SCREEN   == "YEAR END CLOSING";
+YOUR_CHOICE           == "Your Choice    :";
+YR_CHOICE             == "Your Choice :";

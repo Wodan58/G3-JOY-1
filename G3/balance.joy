@@ -1,0 +1,42 @@
+(*
+    module  : balance.joy
+    version : 1.8
+    date    : 02/17/25
+*)
+
+balance_entry ==
+
+BALANCE_SHEET_SCREEN entry
+
+[[0   DATE_FROM   20  7 datein]
+ [0   DATE_TO     59  7 datein]
+ [0   SEQNR_FROM  20  8 wordin]
+ [0   SEQNR_TO    59  8 wordin]
+ [" " YOUR_CHOICE 20 10 textin balance_zzz]]
+
+input_text input_loop;
+
+balance_view ==
+
+(* balance sheet *)
+BALANCE_SHEET_SCREEN
+
+(* common part of report handling *)
+view_entry
+
+(* read list of accounts *)
+init_Acc _Acc
+[second "b" =] filter	(* only balance sheet accounts are needed *)
+profit_mid
+[negative]
+profit_end
+
+page_entry pop;	(* remove false *)
+
+(*
+    Balance sheet
+*)
+balance_zzz ==
+4 pick
+filter_read	(* initialize selection variables *)
+[ZRARR =] [balance_view] [] ifte;

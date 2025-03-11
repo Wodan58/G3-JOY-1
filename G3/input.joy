@@ -1,0 +1,95 @@
+(*
+    module  : input.joy
+    version : 1.6
+    date    : 02/17/25
+*)
+
+(*
+    input_line receives an aggregate, an index and a new line and needs to
+    replace the line in the aggregate at the given index with the new line.
+*)
+input_line ==	(* [..] index [.] *)
+over		(* [..] index [.] index *)
+rolldownd	(* index [.] [..] index *)
+over over	(* index [.] [..] index [..] index *)
+succ drop	(* index [.] [..] index [..] *)
+[take] dip	(* index [.] [..] [..] *)
+enconcat	(* index [..] *)
+swap;		(* [..] index *)
+
+(*
+    input_loop receives an aggregate and needs to update the variables in the
+    aggregate with values taken from user input; return value is either ZLARR
+    or ZRARR.
+*)
+input_loop ==	(* [..] *)
+0		(* [..] index *)
+[0 >=]
+[over		(* [..] index [..] *)
+over		(* [..] index [..] index *)
+at		(* [..] index [.] *)
+dup		(* [..] index [.] [.] *)
+first		(* [..] index [.] var *)
+over		(* [..] index [.] var [.] *)
+2 at		(* [..] index [.] var x-pos *)
+2 pick		(* [..] index [.] var x-pos [.] *)
+3 at		(* [..] index [.] var x-pos y-pos *)
+3 pick		(* [..] index [.] var x-pos y-pos [.] *)
+4 at		(* [..] index [.] var x-pos y-pos function *)
+call		(* [..] index [.] var ch *)
+
+2 pick		(* [..] index [.] var ch [.] *)
+dup		(* [..] index [.] var ch [.] [.] *)
+size		(* [..] index [.] var ch [.] size *)
+[6 =]
+[pop 5 at call]	(* [..] index [.] var ch function *)
+[pop2]		(* [..] index [.] var ch *)
+ifte		(* [..] index [.] var ch *)
+
+[input_var	(* [..] index [.] *)
+input_line]	(* [..] index *)
+dip		(* [..] index ch *)
+
+[[[ZUARR =] pop pred [negative] [pop dup size pred] [] ifte]
+ [[ZDARR =] pop succ [over size >=] [pop 0] [] ifte]
+ [[ZLARR =] ]
+ [[ZRARR =] ]
+ []] cond
+
+] while pop3;
+
+(* This code displays the contents of variables on the screen *)
+input_show ==	(* [..] *)
+[dup		(* [..] [..] *)
+2 at		(* [..] x-pos *)
+over		(* [..] x-pos [..] *)
+3 at		(* [..] x-pos y-pos *)
+gotoxy		(* [..] *)
+dup		(* [..] [..] *)
+[first] dip	(* var [..] *)
+4 at		(* var type *)
+input_type	(* *)
+] step;		(* *)
+
+(* This code displays the texts that precede the variables on the screen *)
+input_text ==
+dup [rest uncons [call] dip uncons [18 -] dip first false print] step;
+
+(*
+    Print the contents of the variables. Each variable has a datatype that is
+    derived from the input function.
+*)
+input_type ==
+[[amount amount_format '\008 swons putchars]
+ [datein datestr dateout rest putchars]
+ [textin putchars]
+ [wordin put]
+ []] case;
+
+(*
+    input_var receives a line and a variable. The variable needs to replace the
+    variable in the line.
+*)
+input_var ==	(* [..] var *)
+[rest] dip	(* [.] var *)
+swons;		(* [.] *)

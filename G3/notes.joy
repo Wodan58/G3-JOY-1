@@ -1,0 +1,61 @@
+(*
+    module  : notes.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+notes_entry ==
+
+NOTES_SCREEN entry
+
+[[0   SEQNR       20  7 wordin notes_seqnr]
+ [0   DATE        20  8 datein]
+ [0   AMOUNT      20  9 amount]
+ [0   ACCOUNT     20 10 wordin]
+ ["                             " NOTES 20 11 textin]	(* 29 characters *)
+ [" " YOUR_CHOICE 20 13 textin notes_zzz]]
+
+input_text input_loop;
+
+(*
+    If everything is filled in correctly, the record can be posted. The thing
+    that must be present is the unique key, in this case the sequence number.
+*)
+notes_post ==
+4 pick		(* [..] *)
+[first first]	(* seqnr *)
+[post_Txt] []	(* no sequence number *)
+ifte pop;	(* remove screen copy *)
+
+(*
+    The posting is read after input of the sequence number. Only the first line
+    is read, maybe that is sufficient? The code currently assumes that the
+*)
+notes_seqnr ==	(* [..] index [.] var ch *)
+over		(* [..] index [.] var ch var *)
+dup		(* [..] index [.] var ch var var *)
+(*
+    The effect is the same, whether found or not. If not found: amnt, date, and
+    accnt will be 0.
+*)
+init_Txt _Txt
+init_Jrn _Jrn popd
+test_empty
+[[pop 0 0 0 ""]] concat
+case		(* [..] index [.] var ch var accnt date amnt "" *)
+(*
+    The description is extended to 29 characters and then added to the list.
+*)
+29 over size - spaces concat
+[" "] cons	(* [..] index [.] var ch var accnt date amnt [" "] *)
+rolldownd	(* [..] index [.] var ch var date amnt accnt [" "] *)
+cons cons cons	(* [..] index [.] var ch var [" "] *)
+cons		(* [..] index [.] var ch [" "] *)
+5 pick		(* [..] index [.] var ch [" "] [..] *)
+[rest] map swap	(* [..] index [.] var ch [..] [" "] *)
+zip		(* [..] index [.] var ch [..] *)
+account_update	(* [..] index [.] var ch [..] *)
+input_show;	(* [..] index [.] var ch *)
+
+notes_zzz ==
+[ZRARR =] [notes_post] [] ifte;

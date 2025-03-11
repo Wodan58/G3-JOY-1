@@ -1,0 +1,24 @@
+(*
+    module  : atari.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+(* readkey reads a single key, while doing Esc processing on some of them *)
+readkey == fgetch
+[27 =]
+[pop fgetch
+  [91 =]
+  [pop fgetch
+    [ [50 fgetch pop fgetch pop ZEND]
+      [65 ZUARR]
+      [66 ZDARR]
+      [67 ZRARR]
+      [68 ZLARR]
+      [72 ZHOME]
+      [73 ZINSERT]
+      [-1]
+    ] case
+  ] [] ifte
+] [
+] ifte;

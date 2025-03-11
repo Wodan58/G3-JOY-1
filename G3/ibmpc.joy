@@ -1,0 +1,29 @@
+(*
+    module  : ibmpc.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+(* readkey reads a single key, while doing Esc processing on some of them *)
+readkey == fgetch
+[27 =]
+[pop fgetch
+  [91 =]
+  [pop fgetch
+    [ [50 fgetch pop ZINSERT]
+      [51 fgetch pop ZDELETE]
+      [53 fgetch pop ZPGUP]
+      [54 fgetch pop ZPGDN]
+      [65 ZUARR]
+      [66 ZDARR]
+      [67 ZRARR]
+      [68 ZLARR]
+      [70 ZEND]
+      [72 ZHOME]
+      []
+    ] case
+  ] [] ifte
+] [
+  (* translate backspace to Ctrl-H *)
+  [127 =] [pop ZBACKSP] [] ifte
+] ifte;

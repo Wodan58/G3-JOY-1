@@ -1,0 +1,35 @@
+(*
+    module  : test.joy
+    version : 1.3
+    date    : 02/18/25
+*)
+
+(*
+    Test emptiness of journal file
+*)
+test_empty ==
+[size 1 >]		(* test empty file *)
+[rest]			(* remove trailer *)
+[] ifte;
+
+(*
+    Test whether a file exists, and if not create the file. The file is then
+    opened for reading.
+*)
+test_file ==		(* filename on input *)
+dup "r" fopen		(* filename fp *)
+[0 =] [pop "w+" fopen]	(* create and open for reading *)
+[popd] ifte;		(* remove duplicate filename *)
+
+(*
+    Repeatedly read keys and echo their value until Ctrl-C is pressed.
+*)
+test_keys == true [] [getkey [3 =] [quit] [ord putln] ifte] while;
+
+(*
+    Protect against empty file.
+*)
+test_trailer == 
+[size 1 >]		(* test empty file *)
+[dup size pred take]	(* remove trailer *)
+[] ifte;

@@ -1,0 +1,89 @@
+(*
+    module  : repmenu.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+rep_action ==
+
+[[1 account_view]
+ [2 standard_view]
+ [3 percent_view]
+ [4 journal_entry]
+ [5 ledger_entry]
+ [6 profit_entry]
+ [7 balance_entry]
+ []] case rep_menu_again pop2 rep_menu;
+
+rep_init ==
+
+(* Start the reports menu *)
+[REPORTS_MENU CHART_ACCOUNTS STANDARDS_MENU PERCENTAGES_MENU
+ TRANSACTION_JOURNAL LEDGER_VIEW PROFIT_AND_LOSS BALANCE_SHEET]
+
+(* And choices that are allowed *)
+['1 '2 '3 '4 '5 '6 '7] [ZLARR ZRARR ZDARR ZUARR] [call swons] step
+
+(* Calculate the x-position of the menu and the title *)
+over rest [call size] map qsort last 8 pick - neg 2 /;
+
+(* Repeat the report menu until left arrow *)
+rep_loop ==
+
+(* Establish the valid input keys *)
+3 pick
+
+(* Read a valid key from input *)
+getkey [has not] [pop getkey] while
+
+(*
+    If UARR or DARR, whiten the old index, calculate a new one,
+    redden the new one, echo the index and continue. Any other key
+    causes some other screen to appear.
+*)
+[[[ZUARR =] menu_old pred [0 =] [pop 7] [] ifte	menu_new]
+ [[ZDARR =] menu_old succ [8 =] [pop 1] [] ifte	menu_new]
+ [[ZLARR =] ]
+ [[ZRARR =] pop2 dup rep_action]
+ [popd 48 - rep_action]]
+cond;
+
+rep_menu ==
+
+(* Clear the rest of the screen *)
+1 6 gotoxy clreod
+
+(* Also clear line 3 between PROGRAM and COMPANY *)
+11 pick UPPER_LEFT size 3 + 3 false print
+
+(* Display the title at the calculated x-position *)
+2 pick first call over 3 false print
+
+(* Display the submenu, starting at line 9, instead of 11 *)
+9 true 4 pick rest [call 3 pick 3 pick 3 pick print pop succ false] step
+
+(* Print the choice line, keeping a copy of the coordinates *)
+pop succ YR_CHOICE 2 pick 2 pick false print " [1]" putchars
+
+(* Allow input at the correct (x,y) position *)
+over YR_CHOICE call size + succ succ over gotoxy
+
+(* Write down the current index *)
+1;
+
+(*
+    Reprint the box at the top of the screen after a report has been printed.
+*)
+rep_menu_again ==
+
+(* Clear the rest of the screen *)
+clrscr
+
+(* Display a box at the top of the screen *)
+1 1 12 pick pred 5 printbox
+
+(* Display the program name in the upper left *)
+UPPER_LEFT 3 3 false print
+
+(* Display the Company that needs accounting in the upper right *)
+10 pick UPPER_RIGHT dup [size succ - ] dip swap 3 false print;

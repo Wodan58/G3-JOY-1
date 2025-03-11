@@ -1,0 +1,55 @@
+(*
+    module  : intro.joy
+    version : 1.8
+    date    : 02/10/25
+*)
+
+intro ==
+
+(* store the number of lines in a variable *)
+2 pick 6 - [_Scr] assign
+
+(* rows cols version "version" x-pos *)
+clrscr
+
+(* Display a box at the top of the screen *)
+over 1 1 rolldown pred 5 printbox
+
+(* Calculate the x-position of the version string *)
+VERSION dup size 4 + 3 pick - neg 2 / dup
+
+(* Position the cursor on line 11 for the version *)
+11 gotoxy
+
+(* Display the version string in white on line 11 *)
+[putchars putchars] dip
+
+(* Display the title of the screen aligned with version *)
+INTRO_MENU swap 3 false print
+
+(* Display the program name in the upper left *)
+UPPER_LEFT 3 3 false print
+
+(* Display the Company that needs accounting in the upper right *)
+UPPER_RIGHT dup size succ 2 pick - neg 3 false print
+
+(* Display the Copyright claim in white on line 14 *)
+"Copyright Saru Janpu 2020" over 25 - 2 / 14 false print
+
+(* Display the slogan in white on line 17 *)
+ACCOUNTING_MADE_EASY dup size 2 pick - neg 2 / 17 false print
+
+(* Display the text on the last line of the screen *)
+PRESS_TO_CONTINUE 1 2 pick false print
+
+(* Calculate the number of spaces between PROGRAM and COMPANY *)
+dup 4 - UPPER_LEFT size - UPPER_RIGHT size -
+
+(* Build a string of space characters *)
+spaces
+
+(* Move the string of spaces to the cold end of the data area *)
+rollup
+
+(* Wait for right-arrow key to be pressed *)
+getkey [ZRARR !=] [pop getkey] while pop;

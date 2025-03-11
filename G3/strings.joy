@@ -1,0 +1,65 @@
+(*
+    module  : strings.joy
+    version : 1.3
+    date    : 02/10/25
+*)
+
+(*
+    Clear string with spaces, that is create a string with the same length, but
+    filled with spaces instead of characters.
+*)
+str_create ==	(* str *)
+size		(* size *)
+""		(* size "" *)
+swap		(* "" size *)
+[" " concat]	(* "" size [" " concat] *)
+times;		(* " " *)
+
+(*
+    Delete position (pos) in string (str) and append a space.
+*)
+str_delete ==	(* str pos *)
+dupd		(* str str pos *)
+dup		(* str str pos pos *)
+[take] dip	(* str str1 pos *)
+swapd		(* str1 str pos *)
+dup		(* str1 str pos pos *)
+[succ drop	(* str1 str2 pos *)
+ concat		(* str pos *)
+ " " concat	(* str+space pos *)
+] dip;		(* str pos *)
+
+(*
+    Insert position (pos) in string (str) and delete last character.
+*)
+str_insert ==	(* str pos *)
+swap		(* pos str *)
+dup		(* pos str str *)
+size		(* pos str size *)
+pred		(* pos str size-1 *)
+take		(* pos str *)
+'\032		(* pos str space *)
+rotate		(* space str pos *)
+dupd		(* space str str pos *)
+dup		(* space str str pos pos *)
+[take] dip	(* space str str1 pos *)
+swapd		(* space str1 str pos *)
+dup		(* space str1 str pos pos *)
+[drop		(* space str1 str2 pos *)
+enconcat	(* str pos *)
+] dip;		(* str pos *)
+
+(*
+    Update position (pos) in string (str) with ch.
+*)
+str_update ==	(* str pos ch *)
+rollup		(* ch str pos *)
+dupd		(* ch str str pos *)
+dup		(* ch str str pos pos *)
+[take] dip	(* ch str str1 pos *)
+swapd		(* ch str1 str pos *)
+dup		(* ch str1 str pos pos *)
+[drop		(* ch str1 str2 pos *)
+ rest		(* ch str1 rest pos *)
+ enconcat	(* str pos *)
+] dip;		(* str pos *)

@@ -13,10 +13,10 @@ procedure that can be followed to start the G3 application:
 
 - The second task is to create a shortcut to the Joy binary, possibly in the
   working directory and maybe on the desktop. The command line in the shortcut
-  should call `joy.exe` with parameters "-k" and "G3/menuin.joy". The last one
-  uses a path relative to the installation directory. It is there that
-  menuin.joy is located. The working directory in the shortcut should point to
-  the directory where `lang.joy` is located.
+  should call `joy.exe` with parameter `g3.joy`. The last one uses a path
+  relative to the installation directory. It is there that `g3.joy` is located.
+  The working directory in the shortcut should point to the directory where
+  `lang.joy` is located.
 
 There is no option from within Joy to restart the executable with a different
 command line. That would be just as cumbersome as creating a shortcut and needs

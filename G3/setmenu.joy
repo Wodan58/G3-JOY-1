@@ -1,0 +1,44 @@
+(*
+    module  : setmenu.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+set_action ==
+
+[[1 account_entry]
+ [2 standard_entry]
+ [3 percent_entry]
+ []] case pop2 rep_menu;
+
+set_init ==
+
+(* Start the settings menu *)
+[SETTINGS_MENU CREATE_ACCOUNT STANDARDS_MENU PERCENTAGES_MENU]
+
+(* And choices that are allowed *)
+['1 '2 '3] [ZLARR ZRARR ZDARR ZUARR] [call swons] step
+
+(* Calculate the x-position of the menu and the title *)
+over rest [call size] map qsort last 8 pick - neg 2 /;
+
+(* Repeat the settings menu until left arrow *)
+set_loop ==
+
+(* Establish the valid input keys *)
+3 pick
+
+(* Read a valid key from input *)
+getkey [has not] [pop getkey] while
+
+(*
+    If UARR or DARR, whiten the old index, calculate a new one,
+    redden the new one, echo the index and continue. Any other key
+    causes some other screen to appear.
+*)
+[[[ZUARR =] menu_old pred [0 =] [pop 3] [] ifte menu_new]
+ [[ZDARR =] menu_old succ [4 =] [pop 1] [] ifte	menu_new]
+ [[ZLARR =] ]
+ [[ZRARR =] pop2 dup set_action]
+ [popd 48 - set_action]]
+cond;

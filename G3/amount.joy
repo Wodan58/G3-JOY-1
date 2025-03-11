@@ -1,0 +1,116 @@
+(*
+    module  : amount.joy
+    version : 1.7
+    date    : 02/25/25
+*)
+
+(*
+    Input of an amount at x, y. The amount is an integer. It needs to be
+    converted to a string prior to input and converted to integer after input.
+    If the amount is negative, the sign needs to be separated out.
+*)
+amount ==		(* amount x y *)
+rolldown		(* x y amount *)
+[negative]		(* if negative *)
+[neg '- "[-"]		(* make positive, encode ok-flag and string *)
+['= "[ "]		(* encode ok-flag and string *)
+ifte			(* x y amount ok "[." *)
+rolldown		(* x y ok "[." amount *)
+[rollupd] dip		(* ok x y "[." amount *)
+'d -19 1 format		(* max. width is 19 characters; min. width is 1 *)
+dup			(* ok x y "[." "amount" "amount" *)
+swapd			(* ok x y "amount" "[." "amount" *)
+concat "]" concat	(* ok x y "amount" "[ amount]" *)
+3 pick			(* ok x y "amount" "[ amount]" x *)
+pred pred		(* ok x y "amount" "[ amount]" x-2 *)
+3 pick			(* ok x y "amount" "[ amount]" x-2 y *)
+true			(* ok x y "amount" "[ amount]" x-2 y true *)
+print clreoln		(* ok x y "amount" *)
+0			(* ok x y "amount" 0 *)
+edit_mul		(* ok x y str pos ch *)
+popd			(* ok x y str ch -> pos is no longer needed *)
+swap			(* ok x y ch str *)
+rollupd			(* ok ch x y str *)
+10 strtol		(* ok ch x y amount *)
+[4 pick '- =]		(* test sign character *)
+[neg] [] ifte		(* ok ch x y amount *)
+dup			(* ok ch x y amount amount *)
+amount_format		(* ok ch x y amount format *)
+rollupd			(* ok ch amount x y format *)
+" " swoncat		(* ok ch amount x y " format" *)
+rollup			(* ok ch amount format x y *)
+[pred pred] dip		(* ok ch amount format x-2 y *)
+false			(* ok ch amount format x-2 y false *)
+print clreoln		(* ok ch amount *)
+rotate			(* amount ch ok *)
+pop;			(* amount ch *)
+
+(*
+    Amounts can be negative.
+*)
+amount_format ==	(* amount *)
+[negative]		(* test whether negative *)
+['- swap neg]		(* '- amount *)
+['\032 swap]		(* '\032 amount *)
+ifte
+[[[10 <] 'd 0 1 format "0,0" swoncat]
+ [[100 <] 'd 0 0 format "0," swoncat]
+
+ [[1000 <] 'd 0 0 format uncons "," swoncat cons]
+ [[10000 <] 'd 0 0 format dup 2 drop "," swoncat [2 take] dip concat]
+ [[100000 <] 'd 0 0 format dup 3 drop "," swoncat [3 take] dip concat]
+
+ [[1000000 <] 'd 0 0 format uncons dup 3 drop "," swoncat [3 take] dip
+   concat "." swoncat cons]
+ [[10000000 <] 'd 0 0 format dup 2 drop dup 3 drop "," swoncat [3 take] dip
+   concat [2 take] dip "." swoncat concat]
+ [[100000000 <] 'd 0 0 format dup 3 drop dup 3 drop "," swoncat [3 take]
+   dip concat [3 take] dip "." swoncat concat]
+
+ [[1000000000 <] 'd 0 0 format uncons dup 3 drop dup 3 drop "," swoncat
+  [3 take] dip concat [3 take] dip "." swoncat concat "." swoncat cons]
+ [[10000000000 <] 'd 0 0 format dup 2 drop dup 3 drop dup 3 drop "," swoncat
+  [3 take] dip concat [3 take] dip "." swoncat concat [2 take] dip "." swoncat
+   concat]
+ [[100000000000 <] 'd 0 0 format dup 3 drop dup 3 drop dup 3 drop "," swoncat
+  [3 take] dip concat [3 take] dip "." swoncat concat [3 take] dip "." swoncat
+   concat]
+
+ [[1000000000000 <] 'd 0 0 format uncons dup 3 drop dup 3 drop dup 3 drop
+   "," swoncat [3 take] dip concat [3 take] dip "." swoncat concat [3 take] dip
+   "." swoncat concat "." swoncat cons]
+ [[10000000000000 <] 'd 0 0 format dup 2 drop dup 3 drop dup 3 drop dup 3
+   drop "," swoncat [3 take] dip concat [3 take] dip "." swoncat concat
+   [3 take] dip "." swoncat concat [2 take] dip "." swoncat concat]
+ [[100000000000000 <] 'd 0 0 format dup 3 drop dup 3 drop dup 3 drop dup 3
+   drop "," swoncat [3 take] dip concat [3 take] dip "." swoncat concat
+   [3 take] dip "." swoncat concat [3 take] dip "." swoncat concat]
+
+ [[1000000000000000 <] 'd 0 0 format uncons dup 3 drop dup 3 drop dup 3
+   drop dup 3 drop "," swoncat [3 take] dip concat [3 take] dip "." swoncat
+   concat [3 take] dip "." swoncat concat [3 take] dip "." swoncat concat "."
+   swoncat cons]
+ [[10000000000000000 <] 'd 0 0 format dup 2 drop dup 3 drop dup 3 drop dup
+   3 drop dup 3 drop "," swoncat [3 take] dip concat [3 take] dip "." swoncat
+   concat [3 take] dip "." swoncat concat [3 take] dip "." swoncat concat
+   [2 take] dip "." swoncat concat]
+ [[100000000000000000 <] 'd 0 0 format dup 3 drop dup 3 drop dup 3 drop dup
+   3 drop dup 3 drop "," swoncat [3 take] dip concat [3 take] dip "." swoncat
+   concat [3 take] dip "." swoncat concat [3 take] dip "." swoncat concat
+   [3 take] dip "." swoncat concat]
+
+ [[1000000000000000000 <] 'd 0 0 format uncons dup 3 drop dup 3 drop dup 3
+   drop dup 3 drop dup 3 drop "," swoncat [3 take] dip concat [3 take] dip "."
+   swoncat concat [3 take] dip "." swoncat concat [3 take] dip "." swoncat
+   concat [3 take] dip "." swoncat concat "." swoncat cons]
+ ['d 0 0 format dup 2 drop dup 3 drop dup 3 drop dup 3 drop dup 3 drop dup 3
+  drop "," swoncat [3 take] dip concat [3 take] dip "." swoncat concat [3 take]
+  dip "." swoncat concat [3 take] dip "." swoncat concat [3 take] dip "."
+  swoncat concat [2 take] dip "." swoncat concat]
+] cond
+cons;	(* merge with sign *)
+
+(*
+    Right align amounts to the maximum of 26 characters.
+*)
+amount_right == amount_format dup size 26 swap - spaces swoncat;

@@ -1,0 +1,46 @@
+(*
+    module  : regmenu.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+reg_action ==
+
+[[1 cash_entry]
+ [2 bank_entry]
+ [3 general_entry]
+ [4 notes_entry]
+ [5 closing_entry]
+ []] case pop2 rep_menu;
+
+reg_init ==
+
+(* Start the register menu *)
+[REGISTER_MENU CASH BANK GENERAL_TRANSACTION NOTES_MENU YEAR_CLOSING_MENU]
+
+(* And choices that are allowed *)
+['1 '2 '3 '4 '5] [ZLARR ZRARR ZDARR ZUARR] [call swons] step
+
+(* Calculate the x-position of the menu and the title *)
+over rest [call size] map qsort last 8 pick - neg 2 /;
+
+(* Repeat the register menu until left arrow *)
+reg_loop ==
+
+(* Establish the valid input keys *)
+3 pick
+
+(* Read a valid key from input *)
+getkey [has not] [pop getkey] while
+
+(*
+    If UARR or DARR, whiten the old index, calculate a new one,
+    redden the new one, echo the index and continue. Any other key
+    causes some other screen to appear.
+*)
+[[[ZUARR =] menu_old pred [0 =] [pop 5] [] ifte	menu_new]
+ [[ZDARR =] menu_old succ [6 =] [pop 1] [] ifte	menu_new]
+ [[ZLARR =] ]
+ [[ZRARR =] pop2 dup reg_action]
+ [popd 48 - reg_action]]
+cond;

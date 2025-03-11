@@ -1,0 +1,16 @@
+(*
+    module  : entry.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+entry ==
+
+(* Clear the rest of the screen *)
+1 6 gotoxy clreod
+
+(* Also clear line 3 between PROGRAM and COMPANY *)
+13 pick UPPER_LEFT size 3 + 3 false print
+
+(* Calculate the x-position of the header and display header *)
+dup size 14 pick size swap - 2 / UPPER_LEFT size + 3 + 3 false print;

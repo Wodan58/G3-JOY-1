@@ -1,0 +1,41 @@
+(*
+    module  : wordin.joy
+    version : 1.3
+    date    : 02/10/25
+*)
+
+(*
+    Input of an unsigned integer at x, y. The integer needs to be converted to
+    a string prior to input and converted to integer after input.
+*)
+wordin ==		(* num x y *)
+'0			(* num x y ok *)
+swap			(* num x ok y *)
+rotated			(* ok x num y *)
+swap			(* ok x y num *)
+'d -19 1 format		(* max. width is 19 characters; min. width is 1 *)
+dup			(* ok x y str str *)
+"[" swoncat		(* ok x y str "[str" *)
+"]" concat		(* ok x y str "[str]" *)
+3 pick			(* ok x y str "[str]" x *)
+pred			(* ok x y str "[str]" x-1 *)
+3 pick			(* ok x y str "[str]" x-1 y *)
+true			(* ok x y str "[str]" x-1 y true *)
+print			(* ok x y str *)
+0			(* ok x y str 0 *)
+edit_mul		(* ok x y str pos ch *)
+popd			(* ok x y str ch -> pos is no longer needed *)
+swap			(* ok x y ch str *)
+rollupd			(* ok ch x y str *)
+10 strtol		(* ok ch x y num *)
+dup			(* ok ch x y num num *)
+'d -19 1 format		(* ok ch x y num str *)
+rollupd			(* ok ch num x y str *)
+" " swoncat		(* ok ch num x y " str" *)
+" " concat		(* ok ch num x y " str " *)
+rollup			(* ok ch num str x y *)
+[pred] dip		(* ok ch num str x-1 y *)
+false			(* ok ch num str x-1 y false *)
+print			(* ok ch num *)
+rotate			(* num ch ok *)
+pop;			(* num ch *)

@@ -1,0 +1,13 @@
+(*
+    module  : cursor.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+curdown == "\027[B" putchars;
+curhide == "\027[?25l" putchars;
+curhome == "\027[H" putchars;
+curleft == '\008 putch;
+curright == "\027[C" putchars;
+curshow == "\027[?25h" putchars;
+curup == "\027[A" putchars;

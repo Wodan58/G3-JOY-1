@@ -1,0 +1,13 @@
+(*
+    module  : g3.joy
+    version : 1.1
+    date    : 01/10/25
+*)
+%SETRAW
+
+(*
+    The version number of the application is set by SCCS.
+    Version numbering starts with 1.1 and can be increased
+    if there is any reason to do so.
+*)
+" 1.1" intro main_init main_menu [] [main_loop] while.

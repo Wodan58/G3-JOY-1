@@ -1,0 +1,13 @@
+(*
+    module  : view.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+view_entry ==
+(* common part of report handling *)
+clrscr
+"\010\009" swoncat
+"\010\009******\010\009" concat 
+date_system datestr concat
+putchars 1 6 gotoxy;

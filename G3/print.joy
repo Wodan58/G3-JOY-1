@@ -1,0 +1,20 @@
+(*
+    module  : print.joy
+    version : 1.3
+    date    : 02/17/25
+*)
+
+(* str x y effect *)
+print == rollup gotoxy [] [colred] [] ifte swap putchars [] [colwhite] [] ifte
+	 pop;
+
+(* printbox - either print a box or only a horizontal line *)
+(* xh yh xl yl *)
+printbox ==
+(* enable graphics *)
+graphenable
+3 pick 3 pick gotoxy
+[1 =] [horizontal] [box] ifte
+4 [pop] times
+(* disable graphics *)
+graphdisable;

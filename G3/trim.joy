@@ -1,0 +1,37 @@
+(*
+    module  : trim.joy
+    version : 1.2
+    date    : 02/18/25
+*)
+
+(*
+    Remove trailing spaces.
+*)
+
+(*
+    This trims spaces at the end.
+    To be configured for strings.
+*)
+trim ==		(* str *)
+dup		(* str str *)
+size		(* str size *)
+pred		(* str size-1 *)
+[[0 >=] [at '\032 =] sequand]
+[pred] while
+succ take;	(* remove spaces at the end *)
+
+(*
+    Remove a trailing newline.
+*)
+trim_newline ==
+dup size pred take;
+
+(*
+    Remove the outer quotes of a string.
+*)
+trim_quotes ==	(* "str" *)
+rest		(* str" *)
+dup		(* str" str" *)
+size		(* str" size *)
+pred		(* str" size-1 *)
+take;		(* str *)

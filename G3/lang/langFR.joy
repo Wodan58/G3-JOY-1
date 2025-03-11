@@ -1,0 +1,70 @@
+(*
+    module  : langFR.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+ACCOUNT               == "compte         :";
+ACCOUNTING_MADE_EASY  == "La Comptabilité Simplifiée";
+ACCOUNT_FROM          == "2ème compte    :";
+ACCOUNT_SCREEN        == "CRÉER UN COMPTE";
+ACCOUNT_TO            == "1er compte     :";
+ACCOUNT_TYPE          == "type de compte :";
+AMOUNT                == "montant        :";
+BALANCE               == "Bilan";
+BALANCE_SHEET         == "7. bilan";
+BALANCE_SHEET_SCREEN  == "BILAN";
+BANK                  == "2. banque";
+BANK_ACCOUNT          == "banque         :";
+BANK_SCREEN           == "BANQUE";
+CASH                  == "1. espèces";
+CASH_ACCOUNT          == "espèces        :";
+CASH_SCREEN           == "ESPÈCES";
+CHART_ACCOUNTS        == "1. plan comptable";
+CHART_ACCOUNTS_SCREEN == "PLAN COMPTABLE";
+CREATE_ACCOUNT        == "1. creér un compte";
+DATE                  == "date           :";
+DATE_FROM             == "premier date   :";
+DATE_TO               == "dernière date  :";
+DESCRIPTION           == "description    :";
+GENERAL_SCREEN        == "TRANSACTION GÉNÉRALE";
+GENERAL_TRANSACTION   == "3. transaction générale";
+INTRO_MENU            == "COMPTABILITÉ";
+LEDGER_VIEW           == "5. vue du compte";
+LEDGER_VIEW_SCREEN    == "VUE DU COMPTE";
+MAIN_MENU             == "MENU PRINCIPAL";
+NET_LOSS              == "Perte nette";
+NET_PROFIT            == "Bénéfice net";
+NOTES                 == "remarques      :";
+NOTES_MENU            == "4. remarques";
+NOTES_SCREEN          == "REMARQUES";
+PERCENTAGES_MENU      == "3. pourcentages d'entrée";
+PERCENTAGES_SCREEN    == "POURCENTAGES";
+PRESS_TO_CONTINUE     == "Appuyez -> pour continuer...";
+PRESS_TO_LEAVE        == "Appuyez <- pour quitter l'écran...";
+PROFIT_AND_LOSS       == "6. bénéfice et perte";
+PROFIT_LOSS_SCREEN    == "BÉNÉFICE ET PERTE";
+REGISTER              == "1. registre";
+REGISTER_MENU         == "REGISTRE";
+REPORTS               == "3. rapports";
+REPORTS_MENU          == "RAPPORTS";
+SEQNR                 == "séquence       :";
+SEQNR_FROM            == "1ère séquence  :";
+SEQNR_TO              == "2ème séquence  :";
+SETTINGS              == "2. paramètres";
+SETTINGS_MENU         == "PARAMÈTRES";
+STANDARDS_MENU        == "2. comptes standards";
+STANDARD_ACCOUNTS     == "COMPTES STANDARDS";
+STANDARD_SCREEN       == "COMPTE STANDARD";
+TRANSACTION_JOURNAL   == "4. journal des transactions";
+TRANSACTION_SCREEN    == "JOURNAL DES TRANSACTIONS";
+UPPER_LEFT	      == "\208\173\208\187\209\143 KAPSALON";
+UPPER_RIGHT	      == "G3";
+VAT_AMOUNT            == "montant de TVA :";
+VAT_CODE              == "code TVA       :";
+VAT_PERCENTAGE        == "% TVA          :";
+VERSION               == "version";
+YEAR_CLOSING_MENU     == "5. clôture de fin d'année";
+YEAR_CLOSING_SCREEN   == "CLÔTURE DE FIN D'ANNÉE";
+YOUR_CHOICE           == "Ton Choix      :";
+YR_CHOICE             == "Ton Choix :";

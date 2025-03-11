@@ -1,0 +1,82 @@
+(*
+    module  : general.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+(*
+    See if the account exists and if it does, display its contents.
+    The data structure need not be updated.
+*)
+general_acct ==	(* [..] [.] var ch *)
+over		(* [..] [.] var ch var *)
+init_Acc _Acc	(* [..] [.] var ch var _Acc *)
+case		(* [..] [.] var ch type vat descr *)
+["" =]		(* test whether the account was found *)
+[5 [pop] times]	(* not found *)
+[41		(* [..] [.] var ch type vat descr 41 *)
+ 6 pick		(* [..] [.] var ch type vat descr 41 [.] *)
+ 3 at		(* [..] [.] var ch type vat descr 41 8/10 *)
+ over
+ over
+ gotoxy
+ clreoln
+ false		(* [..] [.] var ch type vat descr 41 8/10 false *)
+ print		(* [..] [.] var ch type vat *)
+ pop		(* [..] [.] var ch type *)
+ pop]		(* [..] [.] var ch *)
+ifte;		(* found *)
+
+general_entry ==
+
+GENERAL_SCREEN entry
+
+[[0   DATE         20  7 datein]
+ [0   ACCOUNT_TO   20  8 wordin general_acct]
+ [0   AMOUNT       20  9 amount]
+ [0   ACCOUNT_FROM 20 10 wordin general_acct]
+ [" " YOUR_CHOICE  20 12 textin general_zzz]]
+
+input_text input_loop;
+
+general_post ==
+[general_test]				(* test everything is filled *)
+[general_store]
+[] ifte;
+
+(*
+    If everything is filled in correctly, the records can be posted.
+    This is the general purpose posting - two accounts are involved.
+*)
+general_store ==
+4 pick					(* [..] *)
+journal_seqnr				(* [..] seqnr *)
+"journal.txt" "ab" fopen		(* [..] seqnr fp *)
+over fput '\009 fputch			(* [..] seqnr fp -> seqnr *)
+2 pick second first fput '\009 fputch	(* 1st account *)
+2 pick first first fput '\009 fputch	(* date *)
+2 pick third first fput '\010 fputch	(* amount *)
+over fput '\009 fputch			(* seqnr *)
+2 pick fourth first fput '\009 fputch	(* 2nd account *)
+2 pick first first fput '\009 fputch	(* date *)
+2 pick third first neg fput		(* amount *)
+'\010 fputch fclose			(* [..] seqnr *)
+pop2
+exit_Jrn;				(* invalidate _Jrn *)
+
+(*
+    Loop at all fields, checking that none is null.
+    Check that all fields are filled.
+*)
+general_test ==
+4 pick		(* [..] *)
+dup		(* [..] [..] *)
+[size] dip	(* size [..] *)
+[first] filter	(* size [..] *)
+size =;		(* boolean *)
+
+(*
+    If everything is filled, posting can be executed.
+*)
+general_zzz ==
+[ZRARR =] [general_post] [] ifte;

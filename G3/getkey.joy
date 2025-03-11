@@ -1,0 +1,20 @@
+(*
+    module  : getkey.joy
+    version : 1.7
+    date    : 02/19/25
+*)
+
+(* getkey switches between stdout and stdin and then reads a key *)
+%IF = K 1 getkey == stdout fflush pop stdin readkey popd;
+
+(* read a key from a redirected file; the definition needs to be one line *)
+%IF = K 0 getkey == stdout fflush pop stdin fgets 10 strtol [positive] [chr] [] ifte popd;
+
+(* x, y; upper left is at (1,1) *)
+gotoxy == "\027[" putchars
+	  'd 0 0 format putchars '; putch
+	  'd 0 0 format putchars 'H putch;
+
+(* graphenable/disable are not available on ATARI; another solution is needed *)
+graphdisable == "\027(B" putchars;
+graphenable == "\027(0" putchars;

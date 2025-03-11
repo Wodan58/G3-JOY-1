@@ -1,0 +1,20 @@
+(*
+    module  : leap.joy
+    version : 1.4
+    date    : 02/10/25
+*)
+
+(*
+    Determine whether a year is a leap year.
+
+    Is the year divisible by 100?
+	Is the year divisible by 400?
+		Yes=leap, No=no leap
+    Else is the year divisible by 4?
+	Yes=leap, No=no leap.
+*)
+isleap ==	(* year *)
+[100 rem 0 =]	(* divisible by 100? *)
+[400 rem 0 =]	(* divisible by 400? *)
+[4 rem 0 =]	(* divisible by 4? *)
+ifte;		(* true/false *)

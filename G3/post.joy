@@ -1,0 +1,31 @@
+(*
+    module  : post.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+post_Acc ==					(* [..] *)
+"account.txt" "ab" fopen			(* [..] fp *)
+over first first fput '\009 fputch		(* account number *)
+over third first trim fput '\009 fputch		(* balance/profit *)
+over fourth first trim fput '\009 fputch	(* VAT code *)
+over second first trim fput '\010 fputch	(* description *)
+fclose exit_Acc;				(* update account.txt *)
+
+post_Prc ==					(* [..] *)
+"percent.txt" "ab" fopen			(* [..] fp *)
+over first first trim fput '\009 fputch		(* percent code *)
+over second first fput '\010 fputch		(* percentage *)
+fclose exit_Prc;				(* update percent.txt *)
+
+post_Std ==					(* [..] *)
+"stdacct.txt" "ab" fopen			(* [..] fp *)
+over first first trim fput '\009 fputch		(* standard code *)
+over second first fput '\010 fputch		(* account number *)
+fclose exit_Std;				(* update stdacct.txt *)
+
+post_Txt ==					(* [..] *)
+"textblk.txt" "ab" fopen			(* [..] fp *)
+over first first fput '\009 fputch		(* seqnr *)
+over 4 at first trim fput '\010 fputch		(* notes *)
+fclose exit_Txt;				(* update textblk.txt *)

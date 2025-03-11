@@ -1,0 +1,42 @@
+(*
+    module  : box.joy
+    version : 1.7
+    date    : 02/17/25
+*)
+
+(* xh yh xl yl *)
+box ==
+
+(* upper left *)
+'l putch
+
+(* horizontal line: o,p,q,r,s *)
+over pred ['q putch] times
+
+(* upper right *)
+'k putch
+
+(* next line *)
+3 pick 3 pick succ gotoxy
+
+(* vertical line *)
+dup pred pred ['x putch curleft curdown] times
+
+(* lower left *)
+'m putch
+
+(* horizontal line: o,p,q,r,s *)
+over pred ['q putch] times
+
+(* lower right *)
+'j putch
+
+(* xh yh xl yl *)
+over 4 pick + 3 pick succ over over gotoxy
+
+(*
+    Vertical line from top to bottom; in the last column there can be no
+    curleft. The solution is to use gotoxy to position the cursor in the
+    correct place.
+*)
+2 pick 2 - ['x putch succ over over gotoxy] times pop2;

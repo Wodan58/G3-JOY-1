@@ -1,0 +1,16 @@
+(*
+    module  : menu.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+menu_new ==
+
+dup 5 pick of call 3 pick 2 pick 8 + true print		(* 8 instead of 10 *)
+2 pick YR_CHOICE call size + 2 + 2 pick
+gotoxy dup 48 + putch curleft;
+
+menu_old ==
+
+pop2
+dup 5 pick of call 3 pick 2 pick 8 + false print;	(* 8 instead of 10 *)

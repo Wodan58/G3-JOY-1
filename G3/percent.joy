@@ -1,0 +1,82 @@
+(*
+    module  : percent.joy
+    version : 1.4
+    date    : 02/24/25
+*)
+
+percent_entry ==
+
+PERCENTAGES_SCREEN entry
+
+[["                                        " VAT_CODE 20 7 textin percent_test]
+ [0   VAT_PERCENTAGE 20  8 amount]
+ [" " YOUR_CHOICE    20 10 textin percent_post]]
+
+input_text input_loop;
+
+(*
+    Build a list of percentages, w/o duplicates, sorted from low to high.
+*)
+percent_list ==
+bs_new			(* create a set *)
+init_Prc _Prc		(* read percentages with possible duplicates *)
+[first] map		(* select only percentage codes *)
+[bs_insert] step	(* build a list of unique percentages *)
+[_Prc] dip		(* [] [..] keys *)
+[swap			(* [] key [..] *)
+dupd			(* [] key key [..] *)
+dup			(* [] key key [..] [..] *)
+[case			(* [] key values *)
+2 wrap			(* [] [.] *)
+swons			(* [] *)
+] dip]			(* [..] *)
+step pop popd;		(* [..] *)
+
+(*
+    If everything is filled in correctly, the record can be posted. The thing
+    that must be present is the unique key, in this case the description.
+*)
+percent_post ==		(* [..] index [.] var ch *)
+[ZRARR =]
+[4 pick			(* [..] *)
+[first first trim "" =]
+[]			(* no description *)
+[post_Prc] ifte pop]	(* remove screen copy *)
+[] ifte;
+
+(*
+    This is similar to account_test, except that it uses percent instead of
+    account.
+*)
+percent_test ==		(* [..] index [.] var ch *)
+4 pick			(* [..] index [.] var ch [..] *)
+2 pick trim		(* [..] index [.] var ch [..] var *)
+init_Prc _Prc		(* [..] index [.] var ch [..] var _Prc *)
+case			(* [..] index [.] var ch [..] perc *)
+(*
+    When found, the string must be split in its constituent parts and shown.
+    The original data structure must also be updated.
+*)
+[0 =]
+[4 [pop] times]
+[standard_merge		(* also works for percents *)
+ account_update		(* also works for percents *)
+ input_show]
+ifte;			(* [..] index [.] var ch *)
+
+(*
+    The percent view reads all percents and displays them on the screen.
+*)
+percent_view ==
+
+(* percentages *)
+PERCENTAGES_SCREEN
+
+(* common part of report handling *)
+view_entry
+
+percent_list		(* read percents *)
+test_trailer		(* test empty file *)
+write_Prc		(* percent texts *)
+
+page_entry pop;

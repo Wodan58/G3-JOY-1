@@ -1,0 +1,19 @@
+(*
+    module  : editsgl.joy
+    version : 1.3
+    date    : 02/10/25
+*)
+
+edit_sgl ==	(* x y str pos *)
+3 pick
+3 pick
+gotoxy
+getkey
+[edit_sgl_key not]
+[pop getkey]
+while;
+
+edit_sgl_key ==	(* ch *)
+ZUARR ZDARR ZLARR ZRARR
+[] cons cons cons cons
+in;		(* t/f *)

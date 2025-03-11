@@ -1,0 +1,101 @@
+(*
+    module  : standard.joy
+    version : 1.4
+    date    : 02/24/25
+*)
+
+(* standard entry *)
+standard_entry ==
+
+STANDARD_SCREEN entry
+
+[["                                        " DESCRIPTION 20 7 textin
+			       standard_test]
+ [0   ACCOUNT     20  8 wordin]
+ [" " YOUR_CHOICE 20 10 textin standard_post]]
+
+input_text input_loop;
+
+(*
+    Build a list of standards, w/o duplicates, sorted from low to high.
+*)
+standard_list ==
+bs_new			(* create a set *)
+init_Std _Std		(* read percentages with possible duplicates *)
+[first] map		(* select only percentage codes *)
+[bs_insert] step	(* build a list of unique percentages *)
+[_Std] dip		(* [] [..] keys *)
+[swap			(* [] key [..] *)
+dupd			(* [] key key [..] *)
+dup			(* [] key key [..] [..] *)
+[case			(* [] key values *)
+2 wrap			(* [] [.] *)
+swons			(* [] *)
+] dip]			(* [..] *)
+step pop popd;		(* [..] *)
+
+(*
+    Merge the standard record with the screen data structure.
+
+    [..] index [.] var ch [..] account
+*)
+standard_merge ==
+3 pick			(* [..] account var *)
+dup size 40 swap -	(* fill descr up to 40 characters *)
+spaces concat		(* [..] account var *)
+swap			(* [..] var account *)
+" "			(* [..] var account " " *)
+3 wrap			(* [..] [.] *)
+
+[[rest] map] dip
+
+zip;
+
+(*
+    If everything is filled in correctly, the record can be posted. The thing
+    that must be present is the unique key, in this case the description.
+*)
+standard_post ==	(* [..] index [.] var ch *)
+[ZRARR =]
+[4 pick			(* [..] *)
+[first first trim "" =]
+[]			(* no description *)
+[post_Std] ifte pop]	(* remove screen copy *)
+[] ifte;
+
+(*
+    This is similar to account_test, except that it uses standard instead of
+    account.
+*)
+standard_test ==	(* [..] index [.] var ch *)
+4 pick			(* [..] index [.] var ch [..] *)
+2 pick trim		(* [..] index [.] var ch [..] var *)
+init_Std _Std		(* [..] index [.] var ch [..] var _Std *)
+case			(* [..] index [.] var ch [..] account *)
+(*
+    When found, the string must be split in its constituent parts and shown.
+    The original data structure must also be updated.
+*)
+[0 =]
+[4 [pop] times]
+[standard_merge		(* [..] index [.] var ch [..] *)
+ account_update		(* also works for standards *)
+ input_show]
+ifte;			(* [..] index [.] var ch *)
+
+(*
+    The standard view reads all standards and displays them on the screen.
+*)
+standard_view ==
+
+(* standard accounts *)
+STANDARD_ACCOUNTS
+
+(* common part of report handling *)
+view_entry
+
+standard_list		(* read standards *)
+test_trailer		(* test empty list *)
+write_Std		(* standard texts *)
+
+page_entry pop;

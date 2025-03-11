@@ -1,0 +1,115 @@
+(*
+    module  : closing.joy
+    version : 1.6
+    date    : 02/17/25
+*)
+
+(*
+    Read accounts, filter profit&loss accounts, remember only account number.
+*)
+closing_end ==
+
+4 pick
+
+dup first first [_BegDate] assign
+dup second first [_EndDate] assign
+third first [_Result] assign
+
+init_Acc _Acc
+[second "w" =] filter
+[first] map [_Profit] assign
+
+(*
+    Read postings.
+*)
+init_Txt _Txt
+init_Jrn _Jrn popd
+test_empty
+(*
+    Filter postings with date between start and end.
+*)
+[third dup _BegDate >= swap _EndDate <= and] filter
+(*
+    Filter postings with a profit&loss account.
+*)
+[second _Profit in] filter
+(*
+    Limit the postings to account and amount.
+*)
+[dup second swap fourth pairlist] map
+(*
+    Add an amount to each profit&loss account.
+*)
+_Profit [["" 0] cons] map
+(*
+    Summarize each account separately.
+*)
+swap summer
+(*
+    Filter accounts with zero amounts.
+*)
+[third] filter			(* [accnt "" amnt] *)
+(*
+    Extract the third field and summarize it.
+*)
+dup [third] map sum		(* [accnt "" amnt] sum *)
+(*
+    Get a new posting number.
+*)
+journal_seqnr			(* [accnt "" amnt] sum seqnr *)
+
+(*
+    Post the summary first.
+*)
+dup				(* [accnt "" amnt] sum seqnr seqnr *)
+[closing_finish] dip		(* [accnt "" amnt] seqnr *)
+swap				(* seqnr [accnt "" amnt] *)
+(*
+    Print while negating the amounts.
+*)
+[over closing_post] step pop;	(* remove seqnr *)
+
+closing_entry ==
+
+YEAR_CLOSING_SCREEN entry
+
+[[0   DATE_FROM   20  7 datein]
+ [0   DATE_TO     59  7 datein]
+ [0   ACCOUNT     20  8 wordin general_acct]
+ [" " YOUR_CHOICE 20 10 textin closing_zzz]]
+
+input_text input_loop;
+
+(*
+    Print to the result account during year-end closure.
+*)
+closing_finish ==		(* sum seqnr *)
+"journal.txt" "ab" fopen	(* sum seqnr fp *)
+swap				(* sum fp seqnr *)
+fput '\009 fputch		(* sum fp -> seqnr *)
+_Result fput '\009 fputch	(* sum fp -> _Result *)
+_EndDate fput '\009 fputch	(* sum fp -> _EndDate *)
+swap				(* fp sum *)
+fput '\010 fputch		(* fp -> sum *)
+fclose
+exit_Jrn;			(* invalidate _Jrn *)
+
+(*
+    Print a posting from the year-end closure.
+*)
+closing_post ==			(* [acct "" amnt] seqnr *)
+"journal.txt" "ab" fopen	(* [acct "" amnt] seqnr fp *)
+swap				(* [acct "" amnt] fp seqnr *)
+fput '\009 fputch 		(* [acct "" amnt] fp -> seqnr *)
+over first fput '\009 fputch	(* [acct "" amnt] fp -> acct *)
+_EndDate fput '\009 fputch	(* [acct "" amnt] fp -> _EndDate *)
+swap				(* fp [acct "" amnt] *)
+third neg fput '\010 fputch	(* fp -> amnt *)
+fclose
+exit_Jrn;			(* invalidate _Jrn *)
+
+(*
+    First check that dates and account are filled. If not, don't do anything.
+*)
+closing_zzz ==
+[ZRARR = general_test and] [closing_end] [] ifte;	(* test everything ok *)

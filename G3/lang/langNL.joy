@@ -1,0 +1,70 @@
+(*
+    module  : langNL.joy
+    version : 1.3
+    date    : 02/10/25
+*)
+
+ACCOUNT               == "rekening       :";
+ACCOUNTING_MADE_EASY  == "Grootboek Gemakkelijk Gemaakt";
+ACCOUNT_FROM          == "rekening van   :";
+ACCOUNT_SCREEN        == "REKENING AANMAKEN";
+ACCOUNT_TO            == "rekening tot   :";
+ACCOUNT_TYPE          == "balans/(w&v)   :";
+AMOUNT                == "bedrag         :";
+BALANCE               == "Saldo";
+BALANCE_SHEET         == "7. balans";
+BALANCE_SHEET_SCREEN  == "BALANS";
+BANK                  == "2. bank";
+BANK_ACCOUNT          == "bank           :";
+BANK_SCREEN           == "BANK";
+CASH                  == "1. kas";
+CASH_ACCOUNT          == "kas            :";
+CASH_SCREEN           == "KAS";
+CHART_ACCOUNTS        == "1. rekening schema";
+CHART_ACCOUNTS_SCREEN == "REKENINGSCHEMA";
+CREATE_ACCOUNT        == "1. rekening aanmaken";
+DATE                  == "datum          :";
+DATE_FROM             == "datum van      :";
+DATE_TO               == "datum tot      :";
+DESCRIPTION           == "omschrijving   :";
+GENERAL_SCREEN        == "MEMORIAAL";
+GENERAL_TRANSACTION   == "3. memoriaal boeking";
+INTRO_MENU            == "BOEKHOUDEN";
+LEDGER_VIEW           == "5. grootboekoverzicht";
+LEDGER_VIEW_SCREEN    == "GROOTBOEKOVERZICHT";
+MAIN_MENU             == "HOOFDMENU";
+NET_LOSS              == "Saldo verlies";
+NET_PROFIT            == "Saldo winst";
+NOTES                 == "opmerkingen    :";
+NOTES_MENU            == "4. notities invoeren";
+NOTES_SCREEN          == "NOTITIES";
+PERCENTAGES_MENU      == "3. percentages";
+PERCENTAGES_SCREEN    == "PERCENTAGES";
+PRESS_TO_CONTINUE     == "Toets -> om door te gaan...";
+PRESS_TO_LEAVE        == "Toets <- om het scherm te verlaten...";
+PROFIT_AND_LOSS       == "6. winst- en verliesrekening";
+PROFIT_LOSS_SCREEN    == "WINST- EN VERLIESREKENING";
+REGISTER              == "1. dagboeken";
+REGISTER_MENU         == "DAGBOEKEN";
+REPORTS               == "3. overzichten";
+REPORTS_MENU          == "OVERZICHTEN";
+SEQNR                 == "volgnr         :";
+SEQNR_FROM            == "volgnr van     :";
+SEQNR_TO              == "volgnr tot     :";
+SETTINGS              == "2. instellingen";
+SETTINGS_MENU         == "INSTELLINGEN";
+STANDARDS_MENU        == "2. standaard rekeningen";
+STANDARD_ACCOUNTS     == "STANDAARD REKENINGEN";
+STANDARD_SCREEN       == "STANDAARD REKENING";
+TRANSACTION_JOURNAL   == "4. journaalposten";
+TRANSACTION_SCREEN    == "JOURNAALPOSTEN";
+UPPER_LEFT	      == "\208\173\208\187\209\143 KAPSALON";
+UPPER_RIGHT	      == "G3";
+VAT_AMOUNT            == "BTW bedrag     :";
+VAT_CODE              == "BTW code       :";
+VAT_PERCENTAGE        == "BTW %          :";
+VERSION               == "versie";
+YEAR_CLOSING_MENU     == "5. jaarafsluiting";
+YEAR_CLOSING_SCREEN   == "JAARAFSLUITING";
+YOUR_CHOICE           == "Uw Keuze       :";
+YR_CHOICE             == "Uw Keuze :";

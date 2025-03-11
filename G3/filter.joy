@@ -1,0 +1,23 @@
+(*
+    module  : filter.joy
+    version : 1.2
+    date    : 02/10/25
+*)
+
+(*
+    After reading journal.txt, apply the date and sequence filters.
+*)
+filter_apply ==
+[third dup _BegDate >= swap _EndDate <= and] filter
+[first dup _BegSeq >= swap _EndSeq <= and] filter;
+
+(*
+    Note: when applying filters, the End values should be set to maxint,
+    if they were not specified.
+    Or, if not specified the filter should not be applied at all.
+*)
+filter_read ==
+dup first first [_BegDate] assign
+dup second first [0 =] [pop maxint] [] ifte [_EndDate] assign
+dup third first [_BegSeq] assign
+fourth first [0 =] [pop maxint] [] ifte [_EndSeq] assign;

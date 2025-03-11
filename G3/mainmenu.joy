@@ -1,0 +1,70 @@
+(*
+    module  : mainmenu.joy
+    version : 1.9
+    date    : 02/17/25
+*)
+
+main_action ==
+
+[[1 reg_init rep_menu [] [reg_loop] while]
+ [2 set_init rep_menu [] [set_loop] while]
+ [3 rep_init rep_menu [] [rep_loop] while]
+[]] case 9 [pop] times main_menu;
+
+main_init ==
+
+(* Start the main menu *)
+[MAIN_MENU REGISTER SETTINGS REPORTS]
+
+(* And choices that are allowed *)
+['1 '2 '3] [ZLARR ZRARR ZDARR ZUARR] [call swons] step
+
+(* Calculate the x-position of the menu and the title *)
+over rest [call size] map qsort last 3 pick - neg 2 /;
+
+(* Repeat the main menu until quit *)
+main_loop ==
+
+(* Establish the valid input keys *)
+3 pick
+
+(* Read a valid key from input *)
+getkey [has not] [pop getkey] while
+
+(*
+    If UARR or DARR, whiten the old index, calculate a new one,
+    redden the new one, echo the index and continue. Any other
+    key causes some other screen to appear.
+*)
+[[[ZUARR =] menu_old pred [0 =] [pop 3] [] ifte menu_new]
+ [[ZDARR =] menu_old succ [4 =] [pop 1] [] ifte menu_new]
+ [[ZLARR =] ]
+ [[ZRARR =] pop2 dup main_action]
+ [popd popd dup 48 - main_action]]
+cond;
+
+main_menu ==
+
+(* Clear the rest of the screen *)
+1 6 gotoxy clreod
+
+(* Also clear line 3 between PROGRAM and COMPANY *)
+6 pick UPPER_LEFT size 3 + 3 false print
+
+(* Display the title at the calculated x-position *)
+2 pick first call over 3 false print
+
+(* Display the main menu, starting at line 9, instead of 11 *)
+9 true 4 pick rest [call 3 pick 3 pick 3 pick print pop succ false] step
+
+(* Print the choice line, keeping a copy of the coordinates *)
+pop succ YR_CHOICE 2 pick 2 pick false print " [1]" putchars
+
+(* Print the leave instruction on the bottom line *)
+PRESS_TO_LEAVE 1 5 pick false print
+
+(* Allow input at the correct (x,y) position *)
+over YR_CHOICE call size + succ succ over gotoxy
+
+(* Write down the current index *)
+1;

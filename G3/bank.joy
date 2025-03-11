@@ -1,0 +1,42 @@
+(*
+    module  : bank.joy
+    version : 1.2
+    date    : 02/18/25
+*)
+
+(* bank entry, either initial or screen *)
+bank_entry ==
+"Bank" [_Standard] assign
+cash_standard	(* read standard Bank account *)
+(*
+    If not found, the result will be 0.
+    In both cases the account can be removed.
+*)
+[0 =] [pop bank_initial] [pop bank_screen] ifte;
+
+(* bank initial *)
+bank_initial ==
+
+BANK_SCREEN entry
+
+[[0   BANK_ACCOUNT 20  7 wordin]
+ [0   DATE         20  8 datein]
+ [0   AMOUNT       20  9 amount]
+ [0   ACCOUNT      20 10 wordin cash_acct]
+ [0   VAT_AMOUNT   20 11 amount]
+ [" " YOUR_CHOICE  20 13 textin cash_zzz]]
+
+input_text input_loop;
+
+(* bank screen *)
+bank_screen ==
+
+BANK_SCREEN entry
+
+[[0   DATE        20  7 datein]
+ [0   AMOUNT      20  8 amount]
+ [0   ACCOUNT     20  9 wordin cash_acct]
+ [0   VAT_AMOUNT  20 10 amount]
+ [" " YOUR_CHOICE 20 12 textin cash_zzz]]
+
+input_text input_loop;

@@ -1,0 +1,20 @@
+(*
+    module  : variables.joy
+    version : 1.1
+    date    : 02/10/25
+*)
+
+_Acc == ;	(* account.txt *)
+_Account == ;	(* account number in selection *)
+_BegDate == ;	(* first date of selection *)
+_BegSeq == ;	(* first sequence number of selection *)
+_EndDate == ;	(* last date of selection *)
+_EndSeq == ;	(* last sequence number of selection *)
+_Jrn == ;	(* journal.txt *)
+_Prc == ;	(* percent.txt *)
+_Profit == ;	(* profit & loss accounts *)
+_Result == ;	(* result account *)
+_Scr == ;	(* screen lines available *)
+_Standard == ;	(* standard Cash/Bank string *)
+_Std == ;	(* stdacct.txt *)
+_Txt == ;	(* textblk.txt *)

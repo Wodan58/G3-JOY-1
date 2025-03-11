@@ -1,0 +1,26 @@
+(*
+    module  : exit.joy
+    version : 1.2
+    date    : 02/18/25
+*)
+
+exit_Acc ==
+[_Acc] unassign
+;	(* account.txt *)
+
+exit_Jrn ==
+[_Jrn] unassign
+;	(* journal.txt *)
+
+exit_Prc ==
+[_Prc] unassign
+;	(* percent.txt *)
+
+exit_Std ==
+[_Std] unassign
+;	(* stdacct.txt *)
+
+exit_Txt ==
+[_Txt] unassign
+exit_Jrn
+;	(* textblk.txt *)

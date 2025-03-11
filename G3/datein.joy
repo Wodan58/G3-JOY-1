@@ -1,0 +1,213 @@
+(*
+    module  : datein.joy
+    version : 1.4
+    date    : 02/13/25
+*)
+
+(*
+    Input of a date. The present value is in red; editing is done in white.
+*)
+
+(*
+    Calculate day and month from the yearday.
+*)
+		(* year yearday *)
+date_daymonth ==
+[31 <=]		(* separate test for January *)
+[1 swap]	(* insert month *)
+[[over isleap]	(* year yearday year *)
+		(* daytab in leap year *)
+[[366 335 305 274 244 213 182 152 121 91 60 31]]
+		(* daytab in normal year *)
+[[365 334 304 273 243 212 181 151 120 90 59 31]]
+ifte
+[over swap -]	(* calculate difftab from daytab and yearday *)
+map popd	(* year difftab *)
+[positive]
+filter		(* extract positive amounts *)
+dup		(* year postab postab *)
+first		(* year postab day *)
+[size succ]	(* year month-1 day *)
+dip]		(* year month day *)
+ifte;		(* year month day *)
+
+(*
+    Format a number as a string of 2 characters with a possible leading zero.
+*)
+date_numstr ==	(* num *)
+'d 0 0 format	(* str *)
+[size 1 =]	(* if the size is 1, a leading zero must be prepended. *)
+["0" swoncat]	(* add the missing zero *)
+[] ifte;	(* str *)
+
+(*
+    Calculate the number of days from May 1, 2014 until the given year.
+*)
+date_offset ==	(* year *)
+2014		(* year start *)
+-120		(* year start offset *)
+[over 3 pick <]	(* as long as start is smaller than year *)
+		(* determine number of days in start and add them to offset *)
+[[over isleap]
+ [366] [365]
+ ifte		(* year start offset days *)
+ +		(* year start offset *)
+ [succ] dip	(* year start+1 offset *)
+] while		(* year year offset *)
+popd popd;	(* offset *)
+
+(*
+    Calculate the year of a given date. Date is decreased and year is
+    increased from 2014 onwards.
+*)
+		(* date *)
+date_startyear ==
+120		(* date 120 *)
++		(* date *)
+2014		(* date year *)
+[over 1 >]	(* as long as date is positive *)
+[[isleap]	(* date year days *)
+ [366] [365]
+ ifte
+ swap		(* date days year *)
+ succ		(* date days year+1 *)
+ [-] dip	(* date year *)
+] while
+[over 1 <]	(* if date is 0 or negative *)
+[pred]		(* decrease year *)
+[] ifte		(* date year *)
+popd;		(* year *)
+
+(*
+    Convert a string to a date.
+*)
+date_strdate ==	(* "ddmmyy" *)
+dup		(* "ddmmyy" "ddmmyy" *)
+2 take		(* "ddmmyy" "dd" *)
+10 strtol	(* "ddmmyy" dd *)
+swap		(* dd "ddmmyy" *)
+dup		(* dd "ddmmyy" "ddmmyy" *)
+2 drop		(* dd "ddmmyy" "mmyy" *)
+2 take		(* dd "ddmmyy" "mm" *)
+10 strtol	(* dd "ddmmyy" mm *)
+swap		(* dd mm "ddmmyy" *)
+4 drop		(* dd mm "yy" *)
+10 strtol	(* dd mm yy *)
+2000 +		(* dd mm ccyy *)
+dup		(* dd mm ccyy ccyy *)
+date_offset	(* dd mm ccyy start *)
+[date_yearday]
+dip		(* yearday start *)
++		(* date *)
+[negative] [pop 0]
+[] ifte;	(* ensure at least 0 *)
+
+(*
+    Ask the current date from the system and return as integer.
+*)
+date_system ==
+time		(* seconds since January 1, 1970 *)
+localtime	(* [year month day hour minute second isdst yearday weekday] *)
+dup		(* [year .. weekday] [year .. weakday] *)
+7 at		(* [year .. weekday] yearday *)
+succ		(* [year .. weekday] yearday+1 *)
+swap		(* yearday+1 [year .. weakday] *)
+first		(* yearday+1 year *)
+date_offset	(* yearday+1 days *)
++;
+
+(*
+    Calculate the day number in a year.
+*)
+date_yearday ==	(* day month year *)
+[isleap]	(* day month leap *)
+[pop [0 0 31 60 91 121 152 182 213 244 274 305 335 366]]  (* leap year *)
+[pop [0 0 31 59 90 120 151 181 212 243 273 304 334 365]]  (* normal year *)
+ifte		(* day month daytab *)
+of		(* day monthdays *)
++;		(* yearday *)
+
+(*
+    Calculate year, month, day from a date.
+*)
+datedmy ==	(* date *)
+dup		(* date date *)
+date_startyear	(* date year *)
+dup		(* date year year *)
+swapd		(* year date year *)
+date_offset	(* year date start *)
+-		(* year yearday *)
+date_daymonth;	(* year month day *)
+
+(*
+    Input of date at x, y. The date is an integer. It needs to be converted to
+    a string prior to input and converted to date after input.
+*)
+datein ==	(* date x y *)
+rolldown	(* x y date *)
+datestr		(* x y "ddmmyy" *)
+dup		(* x y "ddmmyy" "ddmmyy" *)
+"[" swoncat	(* x y "ddmmyy" "[ddmmyy" *)
+"]   " concat	(* x y "ddmmyy" "[ddmmyy]   " *)
+3 pick		(* x y "ddmmyy" "[ddmmyy]   " x *)
+pred		(* x y "ddmmyy" "[ddmmyy]   " x-1 *)
+3 pick		(* x y "ddmmyy" "[ddmmyy]   " x-1 y *)
+true		(* x y "ddmmyy" "[ddmmyy]   " x-1 y true *)
+print		(* x y "ddmmyy" *)
+'0 swap		(* x y '0 "ddmmyy" *)
+rollupd		(* '0 x y "ddmmyy" *)
+0		(* '0 x y "ddmmyy" 0 *)
+edit_mul	(* ok x y str pos ch *)
+popd		(* ok x y str ch -> pos is no longer needed *)
+swap		(* ok x y ch str *)
+rollupd		(* ok ch x y str *)
+dup		(* ok ch x y str str *)
+rollupd		(* ok ch str x y str *)
+dateout		(* ok ch str x y format *)
+rollup		(* ok ch str format x y *)
+[pred] dip	(* ok ch str format x-1 y *)
+false		(* ok ch str format x-1 y false *)
+print		(* ok ch str *)
+date_strdate	(* ok ch date *)
+rotate		(* date ch ok *)
+pop;		(* date ch *)
+
+(*
+    Convert datestr to string with / as separator and including century.
+*)
+dateout ==	(* "ddmmyy" *)
+["      " =]
+[pop
+ "        "]	(* add two extra space characters *)
+[dup		(* "ddmmyy" "ddmmyy" *)
+4 drop		(* "ddmmyy" "yy" *)
+swap		(* "yy" "ddmmyy" *)
+dup		(* "yy" "ddmmyy" "ddmmyy" *)
+2 drop 2 take	(* "yy" "ddmmyy" "mm" *)
+swap		(* "yy" "mm" "ddmmyy" *)
+2 take		(* "yy" "mm" "dd" *)
+" " swoncat	(* "yy" "mm" " dd" *)
+"/" concat	(* "yy" "mm" " dd/" *)
+swoncat		(* "yy" " dd/mm" *)
+"/20" concat	(* "yy" " dd/mm/20" *)
+swoncat]	(* " dd/mm/20yy" *)
+ifte;
+
+(*
+    Convert a date to a string, formatted as ddmmyy. The century is not
+    included. A date equal to 0 is treated as a special case and results
+    in a string consisting of 6 space characters.
+*)
+datestr ==	(* date *)
+[0 =]
+[pop "      "]	(* empty string *)
+[datedmy	(* year month day *)
+date_numstr	(* year month "day" *)
+rotate		(* "day" month year *)
+100 rem		(* "day" month year%100 *)
+date_numstr	(* "day" month "year" *)
+[date_numstr]	(* "day" "month" "year" *)
+dip
+concat		(* "day" "monthyear" *)
+concat]		(* "daymonthyear" *)
+ifte;

@@ -1,0 +1,41 @@
+(*
+    module  : textin.joy
+    version : 1.2
+    date    : 02/10/25
+*)
+
+(*
+    Input of a string at x, y. The string will be larger than 1 because strings
+    of size 1 can be handled by choice.
+*)
+textin ==		(* str x y *)
+'\032			(* str x y ok *)
+swap			(* str x ok y *)
+rotated			(* ok x str y *)
+swap			(* ok x y str *)
+dup			(* ok x y str str *)
+"[" swoncat		(* ok x y str "[str" *)
+"]" concat		(* ok x y str "[str]" *)
+3 pick			(* ok x y str "[str]" x *)
+pred			(* ok x y str "[str]" x-1 *)
+3 pick			(* ok x y str "[str]" x-1 y *)
+true			(* ok x y str "[str]" x-1 y true *)
+print			(* ok x y str *)
+0			(* ok x y str pos *)
+[over size 1 =]
+[edit_sgl]
+[edit_mul]
+ifte			(* ok x y str pos ch *)
+popd			(* ok x y str ch -> pos is no longer needed *)
+swap			(* ok x y ch str *)
+rollupd			(* ok ch x y str *)
+dup			(* ok ch x y str str *)
+rollupd			(* ok ch str x y str *)
+" " swoncat		(* ok ch str x y " str" *)
+" " concat		(* ok ch str x y " str " *)
+rollup			(* ok ch str str x y *)
+[pred] dip		(* ok ch str str x-1 y *)
+false			(* ok ch str str x-1 y false *)
+print			(* ok ch str *)
+rotate			(* str ch ok *)
+pop;			(* str ch *)

@@ -1,0 +1,46 @@
+(*
+    module  : write.joy
+    version : 1.2
+    date    : 02/13/25
+*)
+
+(*
+    When given the chart of accounts, convert them to strings and display them.
+*)
+write_Acc ==
+[] swap
+[uncons ['d 0 0 format "\009" concat] dip
+ uncons ["\009" concat concat] dip
+ uncons ["\009" concat concat] dip
+ first "\010" concat concat swons]
+step;
+
+(*
+    Lines of journal entries, in text format.
+*)
+write_Jrn ==
+[] swap
+[uncons ['d 0 0 format "\009" concat] dip
+ uncons ['d 0 0 format "\009" concat concat] dip
+ uncons [datestr "\009" concat concat] dip
+ uncons [amount_right "\032" concat concat] dip		(* space separator *)
+ first "\010" concat concat swons]			(* description *)
+step;
+
+(*
+    Lines of percents, in text format.
+*)
+write_Prc ==
+[] swap
+[uncons ["\009" concat] dip				(* tab separator *)
+ first amount_right "\010" concat concat swons]		(* percentage *)
+step;
+
+(*
+    Lines of standards, in text format.
+*)
+write_Std ==
+[] swap
+[uncons ["\009" concat] dip				(* tab separator *)
+ first 'd 0 0 format "\010" concat concat swons]	(* account *)
+step;

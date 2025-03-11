@@ -1,0 +1,147 @@
+(*
+    module  : editmul.joy
+    version : 1.6
+    date    : 02/25/25
+*)
+
+edit_allow ==					(* ok x y str pos ch *)
+5 pick
+[['= dup '- = swap dup '0 >= swap '9 <= and or]	(* amounts *)
+ ['- dup '- = swap dup '0 >= swap '9 <= and or]	(* amounts *)
+ ['0 dup '0 >= swap '9 <= and]			(* numbers *)
+ ['\032 dup '\032 >= swap 1114111 <= and]	(* text *)
+ []] case;
+
+(*
+    Edit position is from 0 .. size-1.
+    The cursor can be positioned from 0 .. size.
+    Characters are inserted to the right of the cursor,
+    except when the cursor is at the end.
+*)
+edit_backsp ==	(* x y str pos *)
+pred		(* x y str pos-1 *)
+str_delete	(* x y str pos *)
+edit_reprint;	(* x y str pos *)
+
+edit_clear ==	(* x y str pos *)
+[str_create]	(* x y str pos *)
+dip
+edit_reprint	(* x y str pos *)
+pop		(* x y str *)
+2 pick
+2 pick
+gotoxy
+0;		(* x y str pos *)
+
+(*
+    edit_end returns true when the cursor is at the last position.
+*)
+edit_end ==	(* str pos *)
+[size] dip	(* size pos *)
+=;		(* t/f *)
+
+edit_forwsp ==	(* x y str pos *)
+str_insert	(* x y str pos *)
+edit_reprint;	(* x y str pos *)
+
+edit_insert ==	(* str pos ch *)
+[pop edit_end]	(* str pos *)
+[pop]		(* str pos -> remove out-of-bounds character *)
+[edit_normal]	(* str pos ch -> insert character *)
+ifte;		(* str pos -> result of ifte *)
+
+(*
+    Edit key processes the editing keys.
+    Normal keys are inserted in the text.
+    Other keys are acted upon.
+*)
+
+(* ok x y str pos ch -> ok x y str pos *)
+edit_key ==	(* ok x y str pos ch *)
+[[[ZBACKSP =] pop [] [edit_backsp] [] ifte]
+ [[ZHOME   =] pop [] [pred curleft] while]
+ [[ZLARR   =] pop [] [pred curleft] [] ifte]
+ [[ZINSERT =] pop [edit_end not] [edit_forwsp] [] ifte]
+ [[ZEND    =] pop [edit_end not] [succ curright] while]
+ [[ZRARR   =] pop [edit_end not] [succ curright] [] ifte]
+ [[ZDELETE =] pop edit_clear]
+ [edit_insert]] cond;
+
+(* ok x y str pos ch -> ok x y str pos *)
+edit_minus ==	(* ok x y str pos ch *)
+['- =]		(* a '- has been pressed *)
+[edit_ok	(* change ok *)
+5 pick		(* ok x y str pos ch ok *)
+['- =]		(* if '- then echo '- *)
+[pop]		(* ok x y str pos ch *)
+[pop2 '\032]	(* replace '= by space *)
+ifte		(* ok x y str pos ch *)
+
+(* echo the '- character or the space character *)
+4 pick pred 4 pick gotoxy putch
+
+(* set the cursor back to where it belongs *)
+3 pick over + 3 pick gotoxy]
+
+(* ok x y str pos *)
+
+(* echo character (ch) update string (str) and position (pos) *)
+[dup [str_update] dip putch succ] ifte;
+
+(*
+    An edit field can be modified at any position.
+*)
+edit_mul ==	(* x y str pos *)
+3 pick
+3 pick
+gotoxy
+getkey
+[edit_mul_key not]
+[edit_key getkey]
+while;
+
+(*
+    An edit field can only be left with an up or down.
+*)
+edit_mul_key ==	(* ch *)
+ZUARR ZDARR
+[] cons cons
+in;		(* t/f *)
+
+edit_normal ==	(* ok x y str pos ch *)
+[edit_allow]
+(* a minus character must be echoed at position 0 and the cursor stays put *)
+[[5 pick '\032 =] [dup [str_update] dip putch succ] [edit_minus] ifte]
+[pop]		(* ok x y str pos -> remove abnormal character *)
+ifte;		(* ok x y str pos -> result of ifte *)
+
+(*
+    The minus character is deep down the stack, and is modified to indicate the
+    sign character as part of the string: '= means no sign and '- means minus
+    sign. The ok field might contain something other than '= or '- and in that
+    case nothing is modified. This function toggles the ok-code from - to = or
+    from = to -.
+*)
+edit_ok ==	(* ok x y str pos ch *)
+5 wrap		(* ok [..] *)
+swap		(* [..] ok *)
+['- =] 		(* test minus *)
+[pop '=]	(* replace by '= *)
+[['= =]		(* test equal *)
+ [pop '-]	(* replace by '- *)
+ [] ifte]	(* '0 or '\032 *)
+ifte
+swap		(* ok [..] *)
+unwrap;		(* ok x y str pos ch *)
+
+edit_reprint ==	(* x y str pos *)
+3 pick		(* x y str pos x *)
+3 pick		(* x y str pos x y *)
+gotoxy		(* x y str pos *)
+over		(* x y str pos str *)
+putchars	(* x y str pos *)
+3 pick		(* x y str pos x *)
+over		(* x y str pos x pos *)
++		(* x y str pos x+pos *)
+3 pick		(* x y str pos x+pos y *)
+gotoxy;		(* x y str pos *)

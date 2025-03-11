@@ -1,0 +1,103 @@
+(*
+    module  : profit.joy
+    version : 1.10
+    date    : 02/24/25
+*)
+
+(*
+    The condition differs in profit and balance views.
+    Input is the summary.
+*)
+profit_end ==
+[NET_LOSS]
+[NET_PROFIT]
+ifte
+[amount_right] dip	(* convert amount to string *)
+"\009" swoncat		(* indent the text with a tab *)
+"\009\009\009\009"	(* four tabs ... *)
+concat			(* ... between text and amount *)
+swoncat			(* append amount to text and tabs *)
+"\010" concat		(* end with a newline *)
+unitlist concat;	(* add line to list of lines *)
+
+profit_entry ==
+
+PROFIT_LOSS_SCREEN entry
+
+[[0   DATE_FROM   20  7 datein]
+ [0   DATE_TO     59  7 datein]
+ [0   SEQNR_FROM  20  8 wordin]
+ [0   SEQNR_TO    59  8 wordin]
+ [" " YOUR_CHOICE 20 10 textin profit_zzz]]
+
+input_text input_loop;
+
+(*
+    Accounts have been read and the appropriate filter has been applied.
+*)
+profit_mid ==
+[dup first swap fourth 0 pairlist cons] map	(* account, descr, amount *)
+
+(*
+    Read postings and make the list smaller, taking account and amount.
+    Read journal.txt into a list of records.
+    The descriptions are also added, unnecessarily.
+*)
+init_Txt _Txt
+init_Jrn _Jrn popd
+test_empty
+filter_apply
+[dup second swap fourth pairlist] map	(* select only account and amount *)
+
+(*
+    Sum the amounts
+*)
+summer
+
+(*
+    Remove accounts with zero amounts.
+*)
+[third 0 !=] filter
+
+dup
+
+(*
+    Calculate the total.
+*)
+[third] map sum
+
+swap
+
+(*
+    Format the list to a list of strings.
+*)
+[dup first 'd 0 0 format "\009" concat swap
+ dup second dup size 40 - neg spaces concat	(* upto 40 characters *)
+ swap third amount_right "\010" concat concat concat] map
+["\009\009\009\009\009\009--------------------------\010"]
+concat swap;
+
+profit_view ==
+
+(* profit and loss *)
+PROFIT_LOSS_SCREEN
+
+(* common part of report handling *)
+view_entry
+
+(* read list of accounts *)
+init_Acc _Acc
+[second "w" =] filter	(* only profit & loss accounts are needed *)
+profit_mid
+[positive]
+profit_end
+
+page_entry pop;		(* remove false *)
+
+(*
+    Profit & Loss
+*)
+profit_zzz ==
+4 pick
+filter_read		(* initialize selection variables *)
+[ZRARR =] [profit_view] [] ifte;

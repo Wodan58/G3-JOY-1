@@ -1,0 +1,77 @@
+(*
+    module  : journal.joy
+    version : 1.2
+    date    : 02/17/25
+*)
+
+journal_entry ==
+
+TRANSACTION_SCREEN entry
+
+[[0   DATE_FROM   20  7 datein]
+ [0   DATE_TO     59  7 datein]
+ [0   SEQNR_FROM  20  8 wordin]
+ [0   SEQNR_TO    59  8 wordin]
+ [" " YOUR_CHOICE 20 10 textin journal_zzz]]
+
+input_text input_loop;
+
+(*
+    Read the next sequence number to be used.
+*)
+journal_seqnr ==
+init_Txt _Txt
+init_Jrn _Jrn popd
+test_empty
+first first succ;
+
+(*
+    Test whether all fields are filled.
+    Loop at all fields, checking that none are empty.
+*)
+journal_test ==
+4 pick		(* [..] *)
+reverselist
+2 drop		(* VAT amount and Your Choice can be empty *)
+dup		(* [..] [..] *)
+[size] dip	(* size [..] *)
+[first 0 !=]
+filter		(* size [..] *)
+size		(* size size *)
+=;		(* boolean *)
+
+(*
+    The journal view reads all journal entries and displays them on the screen.
+*)
+journal_view ==
+
+(* transactions *)
+TRANSACTION_SCREEN
+
+(* common part of report handling *)
+view_entry
+
+(*
+    Read journal.txt into a list of records.
+    The descriptions are also added.
+*)
+init_Txt _Txt
+init_Jrn _Jrn popd
+test_empty
+
+(*
+    The filter is applied, possibly reducing the amount of lines.
+*)
+filter_apply
+
+write_Jrn
+
+page_entry pop;		(* remove false *)
+
+(*
+    16 pick can be used to retrieve the number of lines on the screen.
+    The filter is read into global variables, making life easier.
+*)
+journal_zzz ==
+4 pick filter_read
+[ZRARR =] [journal_view] [] ifte;
