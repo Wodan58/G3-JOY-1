@@ -1,7 +1,7 @@
 (*
     module  : mainmenu.joy
-    version : 1.9
-    date    : 02/17/25
+    version : 1.10
+    date    : 07/21/25
 *)
 
 main_action ==
@@ -45,26 +45,7 @@ cond;
 
 main_menu ==
 
-(* Clear the rest of the screen *)
-1 6 gotoxy clreod
-
-(* Also clear line 3 between PROGRAM and COMPANY *)
-6 pick UPPER_LEFT size 3 + 3 false print
-
-(* Display the title at the calculated x-position *)
-2 pick first call over 3 false print
-
-(* Display the main menu, starting at line 9, instead of 11 *)
-9 true 4 pick rest [call 3 pick 3 pick 3 pick print pop succ false] step
-
-(* Print the choice line, keeping a copy of the coordinates *)
-pop succ YR_CHOICE 2 pick 2 pick false print " [1]" putchars
+rep_menu
 
 (* Print the leave instruction on the bottom line *)
-PRESS_TO_LEAVE 1 5 pick false print
-
-(* Allow input at the correct (x,y) position *)
-over YR_CHOICE call size + succ succ over gotoxy
-
-(* Write down the current index *)
-1;
+PRESS_TO_LEAVE 1 5 pick false print;

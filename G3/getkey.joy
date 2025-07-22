@@ -1,14 +1,19 @@
 (*
     module  : getkey.joy
-    version : 1.7
-    date    : 02/19/25
+    version : 1.8
+    date    : 07/21/25
 *)
 
 (* getkey switches between stdout and stdin and then reads a key *)
-%IF = K 1 getkey == stdout fflush pop stdin readkey popd;
+%IF = K 1 getkey == getkey_true;
 
 (* read a key from a redirected file; the definition needs to be one line *)
-%IF = K 0 getkey == stdout fflush pop stdin fgets 10 strtol [positive] [chr] [] ifte popd;
+%IF = K 0 getkey == getkey_file;
+
+getkey_file == stdout fflush pop stdin fgets 10 strtol [positive] [chr] [] ifte
+	       popd;
+
+getkey_true == stdout fflush pop stdin readkey popd;
 
 (* x, y; upper left is at (1,1) *)
 gotoxy == "\027[" putchars

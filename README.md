@@ -48,7 +48,7 @@ History
 
 This application is a reincarnation of a BASIC program developed by a reverend
 in 1985. Whether this application bears any visual resemblance to the original
-is unbeknownst to the current maintainer.
+is unbeknownst to the current caretaker.
 
 Splash
 ------
