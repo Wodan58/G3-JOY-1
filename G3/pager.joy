@@ -1,7 +1,7 @@
 (*
     module  : pager.joy
-    version : 1.4
-    date    : 02/17/25
+    version : 1.5
+    date    : 01/04/26
 *)
 
 (*
@@ -18,7 +18,7 @@ page_down ==
 *)
 page_entry ==
 0 swap	(* this is Start, it is followed by Lines *)
-[] [page_screen page_read] while;
+[bool] [page_screen page_read] while;
 
 (*
     Home and hide the cursor.

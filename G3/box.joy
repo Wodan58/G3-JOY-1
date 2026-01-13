@@ -1,35 +1,35 @@
 (*
     module  : box.joy
-    version : 1.7
-    date    : 02/17/25
+    version : 1.8
+    date    : 01/04/26
 *)
 
 (* xh yh xl yl *)
 box ==
 
 (* upper left *)
-'l putch
+box_top_left putch
 
 (* horizontal line: o,p,q,r,s *)
-over pred ['q putch] times
+over pred [box_horizontal putch] times
 
 (* upper right *)
-'k putch
+box_top_right putch
 
 (* next line *)
 3 pick 3 pick succ gotoxy
 
 (* vertical line *)
-dup pred pred ['x putch curleft curdown] times
+dup pred pred [box_vertical putch curleft curdown] times
 
 (* lower left *)
-'m putch
+box_bottom_left putch
 
 (* horizontal line: o,p,q,r,s *)
-over pred ['q putch] times
+over pred [box_horizontal putch] times
 
 (* lower right *)
-'j putch
+box_bottom_right putch
 
 (* xh yh xl yl *)
 over 4 pick + 3 pick succ over over gotoxy
@@ -39,4 +39,40 @@ over 4 pick + 3 pick succ over over gotoxy
     curleft. The solution is to use gotoxy to position the cursor in the
     correct place.
 *)
-2 pick 2 - ['x putch succ over over gotoxy] times pop2;
+2 pick 2 - [box_vertical putch succ over over gotoxy] times pop2;
+
+(*
+    ASCII
+*)
+
+(*
+box_bottom_left == '+;
+box_bottom_right == '+;
+box_horizontal == '-;
+box_top_left == '+;
+box_top_right == '+;
+box_vertical == '|;
+*)
+
+(*
+    Codepage 437
+*)
+
+(*
+box_bottom_left == 192;
+box_bottom_right == 217;
+box_horizontal == 196;
+box_top_left == 218;
+box_top_right == 191;
+box_vertical == 179;
+*)
+
+(*
+    Unicode
+*)
+box_bottom_left == 9492;
+box_bottom_right == 9496;
+box_horizontal == 9472;
+box_top_left == 9484;
+box_top_right == 9488;
+box_vertical == 9474;

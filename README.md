@@ -4,7 +4,7 @@ G3
 Accounting Made Easy
 
 This repository shows an application built in the
-[Programming Language Joy](https://github.com/Wodan58/Joy).
+[Joy Programming Language](https://github.com/Wodan58/Joy).
 
 Disclaimer
 ----------
@@ -34,9 +34,7 @@ Windows installer
 
 [G3-JOY-1](https://drive.google.com/file/d/1H8tQwsbWxKky1vSeNMp62w85CX0SPO3T/view?usp=drive_link)
 
-The installer and the program that it installs are 32-bit programs. If, at any
-moment in the future, this application is made available in the Microsoft Store,
-it will probably be 64-bit.
+The installer and the program that it installs are 32-bit programs.
 
 See also
 --------

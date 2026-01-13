@@ -1,7 +1,7 @@
 (*
-    module  : 42minjoy.lib
-    version : 1.14
-    date    : 07/21/25
+    module  : g3.lib
+    version : 1.1
+    date    : 01/03/26
 *)
 
 (*
@@ -60,6 +60,7 @@
 %IF = G 1 %INCLUDE G3/bank.joy
 
 	binary		==  unary popd				 ;
+	bool		==  4 casting				 ;
 	boolean		==  true sametype			 ;
 
 %IF = G 1 %INCLUDE G3/box.joy
@@ -319,6 +320,7 @@
 	unpair		==  uncons uncons pop			 ;
 	unswons		==  uncons swap				 ;
 	unwrap		==  [] step				 ;
+	urem		==  over over \ * -			 ;
 	user		==  [zzz] first sametype		 ;
 
 %IF = G 1 %INCLUDE G3/view.joy

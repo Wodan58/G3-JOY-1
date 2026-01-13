@@ -1,7 +1,7 @@
 (*
     module  : closing.joy
-    version : 1.6
-    date    : 02/17/25
+    version : 1.7
+    date    : 01/04/26
 *)
 
 (*
@@ -41,18 +41,22 @@ test_empty
     Add an amount to each profit&loss account.
 *)
 _Profit [["" 0] cons] map
+
 (*
     Summarize each account separately.
 *)
 swap summer
+
 (*
     Filter accounts with zero amounts.
 *)
-[third] filter			(* [accnt "" amnt] *)
+[third 0 !=] filter		(* [accnt "" amnt] *)
+
 (*
     Extract the third field and summarize it.
 *)
 dup [third] map sum		(* [accnt "" amnt] sum *)
+
 (*
     Get a new posting number.
 *)
@@ -64,6 +68,7 @@ journal_seqnr			(* [accnt "" amnt] sum seqnr *)
 dup				(* [accnt "" amnt] sum seqnr seqnr *)
 [closing_finish] dip		(* [accnt "" amnt] seqnr *)
 swap				(* seqnr [accnt "" amnt] *)
+
 (*
     Print while negating the amounts.
 *)

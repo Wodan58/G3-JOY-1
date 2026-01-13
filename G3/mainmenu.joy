@@ -1,14 +1,14 @@
 (*
     module  : mainmenu.joy
-    version : 1.10
-    date    : 07/21/25
+    version : 1.11
+    date    : 01/04/26
 *)
 
 main_action ==
 
-[[1 reg_init rep_menu [] [reg_loop] while]
- [2 set_init rep_menu [] [set_loop] while]
- [3 rep_init rep_menu [] [rep_loop] while]
+[[1 reg_init rep_menu [bool] [reg_loop] while]
+ [2 set_init rep_menu [bool] [set_loop] while]
+ [3 rep_init rep_menu [bool] [rep_loop] while]
 []] case 9 [pop] times main_menu;
 
 main_init ==

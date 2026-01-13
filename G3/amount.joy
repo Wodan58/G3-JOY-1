@@ -1,7 +1,7 @@
 (*
     module  : amount.joy
-    version : 1.7
-    date    : 02/25/25
+    version : 1.8
+    date    : 01/04/26
 *)
 
 (*
@@ -69,6 +69,12 @@ ifte
 
  [[1000000000 <] 'd 0 0 format uncons dup 3 drop dup 3 drop "," swoncat
   [3 take] dip concat [3 take] dip "." swoncat concat "." swoncat cons]
+
+(*
+ ['d 0 0 format dup 2 drop dup 3 drop dup 3 drop "," swoncat [3 take] dip
+  concat [3 take] dip "." swoncat concat [2 take] dip "." swoncat concat]
+*)
+
  [[10000000000 <] 'd 0 0 format dup 2 drop dup 3 drop dup 3 drop "," swoncat
   [3 take] dip concat [3 take] dip "." swoncat concat [2 take] dip "." swoncat
    concat]
