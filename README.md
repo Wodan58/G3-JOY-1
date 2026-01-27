@@ -9,8 +9,7 @@ This repository shows an application built in the
 Disclaimer
 ----------
 
-The source code was adjusted to new requirements: UTF-8 strings.
-It is now under alpha-testing.
+The source code is under alpha-testing.
 
 Running
 -------
@@ -32,9 +31,9 @@ See chapters A-Z in:
 Windows installer
 -----------------
 
-[G3-JOY-1](https://drive.google.com/file/d/1H8tQwsbWxKky1vSeNMp62w85CX0SPO3T/view?usp=drive_link)
+[G3-JOY-1](https://drive.google.com/file/d/1RfSjtQHiAoTbH0mqX36qnYrx1ITMf3ZD/view?usp=sharing)
 
-The installer and the program that it installs are 32-bit programs.
+The joy.exe that the installer installs is a 64-bit program.
 
 See also
 --------

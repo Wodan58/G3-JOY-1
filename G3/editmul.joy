@@ -1,7 +1,7 @@
 (*
     module  : editmul.joy
-    version : 1.7
-    date    : 01/04/26
+    version : 1.8
+    date    : 01/20/26
 *)
 
 edit_allow ==					(* ok x y str pos ch *)
@@ -58,9 +58,9 @@ ifte;		(* str pos -> result of ifte *)
 
 (* ok x y str pos ch -> ok x y str pos *)
 edit_key ==	(* ok x y str pos ch *)
-[[[ZBACKSP =] pop [bool] [edit_backsp] [] ifte]
- [[ZHOME   =] pop [bool] [pred curleft] while]
- [[ZLARR   =] pop [bool] [pred curleft] [] ifte]
+[[[ZBACKSP =] pop [positive] [edit_backsp] [] ifte]
+ [[ZHOME   =] pop [positive] [pred curleft] while]
+ [[ZLARR   =] pop [positive] [pred curleft] [] ifte]
  [[ZINSERT =] pop [edit_end not] [edit_forwsp] [] ifte]
  [[ZEND    =] pop [edit_end not] [succ curright] while]
  [[ZRARR   =] pop [edit_end not] [succ curright] [] ifte]

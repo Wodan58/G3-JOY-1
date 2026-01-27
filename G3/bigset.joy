@@ -1,13 +1,15 @@
 (*
     module  : bigset.joy
-    version : 1.1
-    date    : 02/24/25
+    version : 1.2
+    date    : 01/20/26
 *)
 
-bs_insert ==
-        [ [ [pop null] [swons] ]
-          [ [[first] dip >] [swons] ]
-          [ [[first] dip =] [pop] ]
-          [ [[uncons] dip] [cons] ] ]
-        condlinrec;
+bs_insert == unitlist bs_union;
 bs_new == [];
+bs_union ==
+        [ [ [null] pop ]
+          [ [pop null] swap pop ]
+          [ [unswons2 [first] dip first <] [uncons] dip bs_union cons ]
+          [ [unswons2 [first] dip first >] uncons swapd bs_union cons ]
+          [ rest [uncons] dip bs_union cons ] ]
+        cond;

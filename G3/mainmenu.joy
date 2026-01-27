@@ -1,14 +1,14 @@
 (*
     module  : mainmenu.joy
-    version : 1.11
-    date    : 01/04/26
+    version : 1.12
+    date    : 01/20/26
 *)
 
 main_action ==
 
-[[1 reg_init rep_menu [bool] [reg_loop] while]
- [2 set_init rep_menu [bool] [set_loop] while]
- [3 rep_init rep_menu [bool] [rep_loop] while]
+[[1 reg_init rep_menu [positive] [reg_loop] while]
+ [2 set_init rep_menu [positive] [set_loop] while]
+ [3 rep_init rep_menu [positive] [rep_loop] while]
 []] case 9 [pop] times main_menu;
 
 main_init ==
@@ -48,4 +48,4 @@ main_menu ==
 rep_menu
 
 (* Print the leave instruction on the bottom line *)
-PRESS_TO_LEAVE 1 5 pick false print;
+PRESS_TO_LEAVE 1 8 pick false print;

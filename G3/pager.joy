@@ -1,7 +1,7 @@
 (*
     module  : pager.joy
-    version : 1.5
-    date    : 01/04/26
+    version : 1.6
+    date    : 01/20/26
 *)
 
 (*
@@ -18,7 +18,7 @@ page_down ==
 *)
 page_entry ==
 0 swap	(* this is Start, it is followed by Lines *)
-[bool] [page_screen page_read] while;
+[6 casting positive] [page_screen page_read] while;
 
 (*
     Home and hide the cursor.
@@ -76,7 +76,7 @@ size				(* start lines size *)
 _Scr				(* start lines size rows *)
 -				(* start lines size-rows *)
 neg				(* start lines rows-size *)
-['~ putch clreoln newline]	(* start lines *)
+['~ putch clreoln '\010 putch]	(* start lines *)
 times				(* start lines *)
 page_restore;			(* start lines *)
 

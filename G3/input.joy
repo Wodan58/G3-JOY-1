@@ -1,7 +1,7 @@
 (*
     module  : input.joy
-    version : 1.6
-    date    : 02/17/25
+    version : 1.7
+    date    : 01/20/26
 *)
 
 (*
@@ -60,6 +60,7 @@ dip		(* [..] index ch *)
 
 (* This code displays the contents of variables on the screen *)
 input_show ==	(* [..] *)
+rest		(* skip the first line *)
 [dup		(* [..] [..] *)
 2 at		(* [..] x-pos *)
 over		(* [..] x-pos [..] *)

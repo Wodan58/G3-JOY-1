@@ -1,7 +1,7 @@
 (*
     module  : read.joy
-    version : 1.3
-    date    : 02/18/25
+    version : 1.5
+    date    : 01/20/26
 *)
 
 (*
@@ -11,14 +11,20 @@
 read_Acc ==
 [] "account.txt" test_file
 [feof not]
-[fgets
+[fgets ["" !=] [
+
  trim_newline
+
  dup field_fourth trim_quotes [] cons
  [dup field_third trim_quotes] dip cons
  [dup field_second trim_quotes] dip cons
  [field_first 10 strtol] dip cons
- swap [swons] dip]
-while fclose unswons append;
+
+ swap [swons] dip] [pop] ifte]
+
+while fclose
+(* If the file is empty, push an empty record *)
+[null] [pop [[0 "" "" ""]]] [[] swap [bs_insert] step] ifte;
 
 (*
     Reading of the journal file must be preceded by reading the text file.
@@ -30,7 +36,7 @@ while fclose unswons append;
 read_Jrn ==
 [] "journal.txt" test_file	(* [], fp *)
 [feof not]
-[fgets				(* line *)
+[fgets ["" !=] [		(* line *)
 
  dup field_first 10 strtol	(* key *)
  4 pick case
@@ -42,20 +48,32 @@ read_Jrn ==
  [dup field_second 10 strtol] dip cons
  [field_first 10 strtol] dip cons
 
- swap [swons] dip]
-while fclose;
+ swap [swons] dip] [pop] ifte]
+
+while fclose
+(* If the file is empty, push an empty record *)
+[null] [pop [[0 0 0 0 ""]]] [] ifte;
 
 (*
     Read percent.txt into a list of records.
+    With the addition of an empty record it
+    can be used in a case-expression.
+    The empty record is inserted right before
+    the case.
 *)
 read_Prc ==
 [] "percent.txt" test_file
 [feof not]
-[fgets
+[fgets ["" !=] [
+
  dup field_second 10 strtol [] cons
  [field_first trim_quotes] dip cons
- swap [swons] dip]
-while fclose unswons append;
+
+ swap [swons] dip] [pop] ifte]
+
+while fclose
+(* If the file is empty, push an empty key *)
+[null] [pop [[""]]] [[] swap [bs_insert] step] ifte;
 
 (*
     Read stdacct.txt into a list of records.
@@ -63,21 +81,30 @@ while fclose unswons append;
 read_Std ==
 [] "stdacct.txt" test_file
 [feof not]
-[fgets
+[fgets ["" !=] [
+
  dup field_second 10 strtol [] cons
  [field_first trim_quotes] dip cons
- swap [swons] dip]
-while fclose unswons append;
+
+ swap [swons] dip] [pop] ifte]
+
+while fclose
+(* If the file is empty, push an empty key *)
+[null] [pop [[""]]] [[] swap [bs_insert] step] ifte;
 
 (*
     Read textblk.txt into a list of records.
+    An empty record is always appended.
 *)
 read_Txt ==
 [] "textblk.txt" test_file
 [feof not]
-[fgets
+[fgets ["" !=] [
+
  trim_newline
+
  dup field_second trim_quotes [] cons
  [field_first 10 strtol] dip cons
- swap [swons] dip]
-while fclose unswons append;
+ swap [swons] dip] [pop] ifte]
+
+while fclose [0 ""] append;

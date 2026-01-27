@@ -1,7 +1,7 @@
 (*
     module  : percent.joy
-    version : 1.4
-    date    : 02/24/25
+    version : 1.5
+    date    : 01/20/26
 *)
 
 percent_entry ==
@@ -18,19 +18,7 @@ input_text input_loop;
     Build a list of percentages, w/o duplicates, sorted from low to high.
 *)
 percent_list ==
-bs_new			(* create a set *)
-init_Prc _Prc		(* read percentages with possible duplicates *)
-[first] map		(* select only percentage codes *)
-[bs_insert] step	(* build a list of unique percentages *)
-[_Prc] dip		(* [] [..] keys *)
-[swap			(* [] key [..] *)
-dupd			(* [] key key [..] *)
-dup			(* [] key key [..] [..] *)
-[case			(* [] key values *)
-2 wrap			(* [] [.] *)
-swons			(* [] *)
-] dip]			(* [..] *)
-step pop popd;		(* [..] *)
+init_Prc _Prc;		(* read percentages with possible duplicates *)
 
 (*
     If everything is filled in correctly, the record can be posted. The thing
@@ -52,13 +40,14 @@ percent_test ==		(* [..] index [.] var ch *)
 4 pick			(* [..] index [.] var ch [..] *)
 2 pick trim		(* [..] index [.] var ch [..] var *)
 init_Prc _Prc		(* [..] index [.] var ch [..] var _Prc *)
+[[0]] concat		(* percents have two columns *)
 case			(* [..] index [.] var ch [..] perc *)
 (*
     When found, the string must be split in its constituent parts and shown.
     The original data structure must also be updated.
 *)
 [0 =]
-[4 [pop] times]
+[pop3]			(* was: [4 [pop] times] *)
 [standard_merge		(* also works for percents *)
  account_update		(* also works for percents *)
  input_show]
@@ -76,7 +65,7 @@ PERCENTAGES_SCREEN
 view_entry
 
 percent_list		(* read percents *)
-test_trailer		(* test empty file *)
+reverselist
 write_Prc		(* percent texts *)
 
 page_entry pop;

@@ -1,7 +1,7 @@
 (*
     module  : cash.joy
-    version : 1.5
-    date    : 02/20/25
+    version : 1.8
+    date    : 01/20/26
 *)
 
 (*
@@ -16,9 +16,10 @@
 cash_acct ==	(* [..] index [.] var ch *)
 over		(* [..] index [.] var ch var *)
 init_Acc _Acc	(* [..] index [.] var ch var _Acc *)
+[0] append
 case		(* [..] index [.] var ch type VAT descr *)
-["" =]		(* an empty description means that the account was not found *)
-[5 [pop] times]	(* [..] index [.] var ch *)
+[0 =]		(* an empty description means that the account was not found *)
+[pop2]		(* was: [5 [pop] times]	-> [..] index [.] var ch *)
 (*
     If the account was found, the description can be displayed.
 *)
@@ -41,10 +42,12 @@ popd		(* [..] index [.] var ch VAT *)
 *)
 [dup		(* [..] index [.] var ch VAT VAT *)
 init_Std _Std
+[pop 0] append	(* was: [["" 0]] concat *)
 case
 [_Account]
 assign		(* [..] index [.] var ch VAT *)
 init_Prc _Prc
+[pop 0] append	(* was: [["" 0]] concat *)
 case		(* [..] index [.] var ch perc *)
 5 pick		(* [..] index [.] var ch perc [..] *)
 (*
@@ -201,16 +204,13 @@ input_text input_loop;
 
 (*
     Read the standard cash account. When found, the account number will
-    be on top. When not found, 0 will be on top followed by "Cash" and "".
-    These strings need to be removed.
+    be on top. When not found, 0 will be on top.
 *)
 cash_standard ==
 _Standard		(* read standard Cash/Bank account *)
 init_Std _Std
-case
-[0 =]
-[pop3 0]		(* when not found: remove strings and reinstall 0 *)
-[] ifte;
+[pop 0] append		(* was: [["" 0]] concat *)
+case;
 
 (*
     Only post in response to RARR, and when everything is filled in correctly.

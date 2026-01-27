@@ -1,35 +1,35 @@
 (*
     module  : box.joy
-    version : 1.8
-    date    : 01/04/26
+    version : 1.9
+    date    : 01/20/26
 *)
 
 (* xh yh xl yl *)
 box ==
 
 (* upper left *)
-box_top_left putch
+box_top_left
 
 (* horizontal line: o,p,q,r,s *)
-over pred [box_horizontal putch] times
+over pred [box_horizontal] times
 
 (* upper right *)
-box_top_right putch
+box_top_right
 
 (* next line *)
 3 pick 3 pick succ gotoxy
 
 (* vertical line *)
-dup pred pred [box_vertical putch curleft curdown] times
+dup pred pred [box_vertical curleft curdown] times
 
 (* lower left *)
-box_bottom_left putch
+box_bottom_left
 
 (* horizontal line: o,p,q,r,s *)
-over pred [box_horizontal putch] times
+over pred [box_horizontal] times
 
 (* lower right *)
-box_bottom_right putch
+box_bottom_right
 
 (* xh yh xl yl *)
 over 4 pick + 3 pick succ over over gotoxy
@@ -39,19 +39,19 @@ over 4 pick + 3 pick succ over over gotoxy
     curleft. The solution is to use gotoxy to position the cursor in the
     correct place.
 *)
-2 pick 2 - [box_vertical putch succ over over gotoxy] times pop2;
+2 pick 2 - [box_vertical succ over over gotoxy] times pop2;
 
 (*
     ASCII
 *)
 
 (*
-box_bottom_left == '+;
-box_bottom_right == '+;
-box_horizontal == '-;
-box_top_left == '+;
-box_top_right == '+;
-box_vertical == '|;
+box_bottom_left == '+ putch;
+box_bottom_right == '+ putch;
+box_horizontal == '- putch;
+box_top_left == '+ putch;
+box_top_right == '+ putch;
+box_vertical == '| putch;
 *)
 
 (*
@@ -59,20 +59,34 @@ box_vertical == '|;
 *)
 
 (*
-box_bottom_left == 192;
-box_bottom_right == 217;
-box_horizontal == 196;
-box_top_left == 218;
-box_top_right == 191;
-box_vertical == 179;
+box_bottom_left == 192 putch;
+box_bottom_right == 217 putch;
+box_horizontal == 196 putch;
+box_top_left == 218 putch;
+box_top_right == 191 putch;
+box_vertical == 179 putch;
 *)
 
 (*
     Unicode
 *)
-box_bottom_left == 9492;
-box_bottom_right == 9496;
-box_horizontal == 9472;
-box_top_left == 9484;
-box_top_right == 9488;
-box_vertical == 9474;
+
+(*
+box_bottom_left == 9492 putch;
+box_bottom_right == 9496 putch;
+box_horizontal == 9472 putch;
+box_top_left == 9484 putch;
+box_top_right == 9488 putch;
+box_vertical == 9474 putch;
+*)
+
+(*
+    UTF-8
+*)
+
+box_bottom_left == "\226\148\148" putchars;
+box_bottom_right == "\226\148\152" putchars;
+box_horizontal == "\226\148\128" putchars;
+box_top_left == "\226\148\140" putchars;
+box_top_right == "\226\148\144" putchars;
+box_vertical == "\226\148\130" putchars;

@@ -1,7 +1,7 @@
 (*
     module  : standard.joy
-    version : 1.4
-    date    : 02/24/25
+    version : 1.5
+    date    : 01/20/26
 *)
 
 (* standard entry *)
@@ -20,19 +20,7 @@ input_text input_loop;
     Build a list of standards, w/o duplicates, sorted from low to high.
 *)
 standard_list ==
-bs_new			(* create a set *)
-init_Std _Std		(* read percentages with possible duplicates *)
-[first] map		(* select only percentage codes *)
-[bs_insert] step	(* build a list of unique percentages *)
-[_Std] dip		(* [] [..] keys *)
-[swap			(* [] key [..] *)
-dupd			(* [] key key [..] *)
-dup			(* [] key key [..] [..] *)
-[case			(* [] key values *)
-2 wrap			(* [] [.] *)
-swons			(* [] *)
-] dip]			(* [..] *)
-step pop popd;		(* [..] *)
+init_Std _Std;		(* read percentages with possible duplicates *)
 
 (*
     Merge the standard record with the screen data structure.
@@ -71,13 +59,14 @@ standard_test ==	(* [..] index [.] var ch *)
 4 pick			(* [..] index [.] var ch [..] *)
 2 pick trim		(* [..] index [.] var ch [..] var *)
 init_Std _Std		(* [..] index [.] var ch [..] var _Std *)
+[[0]] concat		(* standards have two columns *)
 case			(* [..] index [.] var ch [..] account *)
 (*
     When found, the string must be split in its constituent parts and shown.
     The original data structure must also be updated.
 *)
 [0 =]
-[4 [pop] times]
+[pop3]			(* was: [4 [pop] times] *)
 [standard_merge		(* [..] index [.] var ch [..] *)
  account_update		(* also works for standards *)
  input_show]
@@ -95,7 +84,7 @@ STANDARD_ACCOUNTS
 view_entry
 
 standard_list		(* read standards *)
-test_trailer		(* test empty list *)
+reverselist
 write_Std		(* standard texts *)
 
 page_entry pop;

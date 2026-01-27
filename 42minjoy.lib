@@ -1,7 +1,7 @@
 (*
     module  : g3.lib
-    version : 1.1
-    date    : 01/03/26
+    version : 1.2
+    date    : 01/20/26
 *)
 
 (*
@@ -319,6 +319,7 @@
 	unitlist	==  [] cons				 ;
 	unpair		==  uncons uncons pop			 ;
 	unswons		==  uncons swap				 ;
+	unswons2	==  [unswons] dip unswons swapd		 ;
 	unwrap		==  [] step				 ;
 	urem		==  over over \ * -			 ;
 	user		==  [zzz] first sametype		 ;
